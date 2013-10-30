@@ -17,7 +17,6 @@
 @implementation ViewController
 
 static NSString * const CellIdentifier = @"Cell";
-//static NSString * const SeparatorTopIdentifier = @"TopSeparator";
 static NSString * const SeparatorIdentifier = @"Separator";
 
 - (void)viewDidLoad

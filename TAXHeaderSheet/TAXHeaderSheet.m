@@ -370,11 +370,58 @@ static NSString * const CellIdentifier = @"Cell";
             return _widthOfFooter;
         }
     } else {
+        // Return width with priority (Top > Bottom > Middle > Property)
         TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForSpreadSheet:spreadSheet];
         if ([self.delegate respondsToSelector:@selector(headerSheet:widthAtColumn:ofSectionType:)]) {
-            return [self.delegate headerSheet:self
-                                widthAtColumn:column
-                                ofSectionType:sectionType];
+            switch (sectionType) {
+                    case TAXHeaderSheetSectionTypeTopLeft:
+                    case TAXHeaderSheetSectionTypeMiddleLeft:
+                    case TAXHeaderSheetSectionTypeBottomLeft:{
+                        CGFloat topLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
+                        CGFloat middleLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
+                        CGFloat bottomLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
+
+                        if (topLeft != NSNotFound) {
+                            return topLeft;
+                        } else if (bottomLeft != NSNotFound) {
+                            return bottomLeft;
+                        } else if (middleLeft != NSNotFound) {
+                            return middleLeft;
+                        } else return _widthOfHeaderCell;
+                    }
+                    case TAXHeaderSheetSectionTypeTopMiddle:
+                    case TAXHeaderSheetSectionTypeBody:
+                    case TAXHeaderSheetSectionTypeBottomMiddle:{
+                        CGFloat topMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
+                        CGFloat body = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBody];
+                        CGFloat bottomMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
+                        
+                        if (topMiddle != NSNotFound) {
+                            return topMiddle;
+                        } else if (bottomMiddle != NSNotFound) {
+                            return bottomMiddle;
+                        } else if (body != NSNotFound) {
+                            return body;
+                        } else return _sizeForCell.width;
+                    }
+                    case TAXHeaderSheetSectionTypeTopRight:
+                    case TAXHeaderSheetSectionTypeMiddleRight:
+                    case TAXHeaderSheetSectionTypeBottomRight:{
+                        CGFloat topRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopRight];
+                        CGFloat middleRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
+                        CGFloat bottomRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
+                        
+                        if (topRight != NSNotFound) {
+                            return topRight;
+                        } else if (bottomRight != NSNotFound) {
+                            return bottomRight;
+                        } else if (middleRight != NSNotFound) {
+                            return middleRight;
+                        } else return _widthOfFooterCell;
+                    }
+                default:
+                    break;
+            }
         } else {
             if (sectionType == TAXHeaderSheetSectionTypeTopLeft ||
                 sectionType == TAXHeaderSheetSectionTypeMiddleLeft ||
@@ -402,11 +449,58 @@ static NSString * const CellIdentifier = @"Cell";
             return self.heightOfFooter;
         }
     } else {
+        // Return height with priority (Left > Right > Middle > Property)
         TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForSpreadSheet:spreadSheet];
         if ([self.delegate respondsToSelector:@selector(headerSheet:heightAtRow:ofSectionType:)]) {
-            return [self.delegate headerSheet:self
-                                  heightAtRow:row
-                                ofSectionType:sectionType];
+            switch (sectionType) {
+                    case TAXHeaderSheetSectionTypeTopLeft:
+                    case TAXHeaderSheetSectionTypeTopMiddle:
+                    case TAXHeaderSheetSectionTypeTopRight:{
+                        CGFloat topLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
+                        CGFloat topMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
+                        CGFloat topRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopRight];
+                        
+                        if (topLeft != NSNotFound) {
+                            return topLeft;
+                        } else if (topMiddle != NSNotFound) {
+                            return topMiddle;
+                        } else if (topRight != NSNotFound) {
+                            return topRight;
+                        } else return _heightOfHeaderCell;
+                    }
+                    case TAXHeaderSheetSectionTypeMiddleLeft:
+                    case TAXHeaderSheetSectionTypeBody:
+                    case TAXHeaderSheetSectionTypeMiddleRight:{
+                        CGFloat middleLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
+                        CGFloat body = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBody];
+                        CGFloat middleRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
+                        
+                        if (middleLeft != NSNotFound) {
+                            return middleLeft;
+                        } else if (body != NSNotFound) {
+                            return body;
+                        } else if (middleRight != NSNotFound) {
+                            return middleRight;
+                        } else return _sizeForCell.height;
+                    }
+                    case TAXHeaderSheetSectionTypeBottomLeft:
+                    case TAXHeaderSheetSectionTypeBottomMiddle:
+                    case TAXHeaderSheetSectionTypeBottomRight:{
+                        CGFloat bottomLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
+                        CGFloat bottomMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
+                        CGFloat bottomRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
+                        
+                        if (bottomLeft != NSNotFound) {
+                            return bottomLeft;
+                        } else if (bottomMiddle != NSNotFound) {
+                            return bottomMiddle;
+                        } else if (bottomRight != NSNotFound) {
+                            return bottomRight;
+                        } else return _heightOfFooterCell;
+                    }
+                default:
+                    break;
+            }
         } else {
             if (sectionType == TAXHeaderSheetSectionTypeTopLeft ||
                 sectionType == TAXHeaderSheetSectionTypeTopMiddle ||
@@ -495,7 +589,7 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
-#pragma mark - Register Classe/Nib for each sheet
+#pragma mark - Register Class/Nib for each sheet
 
 // Register Class/Nib to NSDictionary whose key is identifier and value is class/nib.
 

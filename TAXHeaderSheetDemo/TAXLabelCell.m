@@ -16,6 +16,7 @@
     if (self) {
         // Initialization code
         UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
+        label.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         label.backgroundColor = [UIColor clearColor];
         _textLabel = label;
         [self.contentView addSubview:label];
