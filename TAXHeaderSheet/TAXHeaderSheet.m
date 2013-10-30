@@ -13,13 +13,12 @@
 
 @property (nonatomic) TAXSpreadSheet *containerSheet;
 @property (nonatomic) NSMutableArray *sheetArray, *separatorArray, *classArray, *nibArray;
-@property (nonatomic) UIScrollView *scrollingView;
 
 @end
 
 @implementation TAXHeaderSheet
 
-NSString * const TAXEmptyViewIdentifier = @"EmptyView";
+static NSString * const EmptyViewIdentifier = @"EmptyView";
 static NSString * const CellIdentifier = @"Cell";
 
 - (id)initWithFrame:(CGRect)frame
@@ -41,6 +40,7 @@ static NSString * const CellIdentifier = @"Cell";
 
 - (void)p_setup
 {
+    self.backgroundColor = [UIColor redColor];
     self.sheetArray = [NSMutableArray arrayWithCapacity:9];
     self.separatorArray = [NSMutableArray arrayWithCapacity:4];
     self.classArray = [NSMutableArray arrayWithCapacity:9];
@@ -58,9 +58,12 @@ static NSString * const CellIdentifier = @"Cell";
     }
     
     TAXSpreadSheet *containerSheet = [[TAXSpreadSheet alloc] initWithFrame:self.bounds];
+    containerSheet.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    containerSheet.backgroundColor = [UIColor lightGrayColor];
+    
     [containerSheet registerClass:[TAXSpreadSheet class] forCellWithReuseIdentifier:CellIdentifier];
-    [containerSheet registerClass:[UICollectionReusableView class] forInterColumnViewWithReuseIdentifier:TAXEmptyViewIdentifier];
-    [containerSheet registerClass:[UICollectionReusableView class] forInterRowViewWithReuseIdentifier:TAXEmptyViewIdentifier];
+    [containerSheet registerClass:[UICollectionReusableView class] forInterColumnViewWithReuseIdentifier:EmptyViewIdentifier];
+    [containerSheet registerClass:[UICollectionReusableView class] forInterRowViewWithReuseIdentifier:EmptyViewIdentifier];
 
     containerSheet.scrollEnabled = NO;
     containerSheet.dataSource = self;
@@ -228,7 +231,7 @@ static NSString * const CellIdentifier = @"Cell";
 - (UICollectionViewCell*)spreadSheet:(TAXSpreadSheet *)spreadSheet cellAtRow:(NSUInteger)row column:(NSUInteger)column
 {
     if (spreadSheet == _containerSheet) {
-        // Return Each SpreadSheet of Section
+        // Return spreadsheet of section
         
         TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForColumn:column row:row];
         TAXSpreadSheet *spreadSheet = [_containerSheet dequeueReusableCellWithReuseIdentifier:CellIdentifier forRow:row column:column];
@@ -236,10 +239,10 @@ static NSString * const CellIdentifier = @"Cell";
         if ([_sheetArray[sectionType] isEqual:[NSNull null]]) {
             _sheetArray[sectionType] = spreadSheet;
             
-            [spreadSheet registerClass:[UICollectionReusableView class] forInterColumnViewWithReuseIdentifier:TAXEmptyViewIdentifier];
-            [spreadSheet registerClass:[UICollectionReusableView class] forInterRowViewWithReuseIdentifier:TAXEmptyViewIdentifier];
+            [spreadSheet registerClass:[UICollectionReusableView class] forInterColumnViewWithReuseIdentifier:EmptyViewIdentifier];
+            [spreadSheet registerClass:[UICollectionReusableView class] forInterRowViewWithReuseIdentifier:EmptyViewIdentifier];
             
-            // Arrayを参照し、Class/Nibを登録
+            // Register class/nib by referring to array.
             for (NSDictionary *dict in _classArray[sectionType]) {
                 for (NSString *identifier in [dict allKeys]) {
                     [spreadSheet registerClass:dict[identifier] forCellWithReuseIdentifier:identifier];
@@ -293,7 +296,7 @@ static NSString * const CellIdentifier = @"Cell";
             return [self.delegate headerSheet:self interColumnViewInSectionType:sectionType afterColumn:column];
         };
     }
-    return [spreadSheet dequeueReusableInterColumnViewWithIdentifier:TAXEmptyViewIdentifier afterColumn:column];
+    return [spreadSheet dequeueReusableInterColumnViewWithIdentifier:EmptyViewIdentifier afterColumn:column];
 }
 
 - (UICollectionReusableView *)spreadSheet:(TAXSpreadSheet *)spreadSheet interRowViewBelowRow:(NSUInteger)row
@@ -323,7 +326,7 @@ static NSString * const CellIdentifier = @"Cell";
             return [self.delegate headerSheet:self interRowViewInSectionType:sectionType belowRow:row];
         };
     }
-    return [spreadSheet dequeueReusableInterRowViewWithIdentifier:TAXEmptyViewIdentifier belowRow:row];
+    return [spreadSheet dequeueReusableInterRowViewWithIdentifier:EmptyViewIdentifier belowRow:row];
 }
 
 - (CGFloat)spreadSheet:(TAXSpreadSheet *)spreadSheet bottomSpacingBelowRow:(NSUInteger)row
@@ -436,6 +439,18 @@ static NSString * const CellIdentifier = @"Cell";
 }
 
 # pragma mark - Register class for separator views of container sheet
+
+- (void)registerClass:(Class)viewClass forSeparatorViewWithReuseIdentifier:(NSString *)identifier
+{
+    [_containerSheet registerClass:viewClass forInterRowViewWithReuseIdentifier:identifier];
+    [_containerSheet registerClass:viewClass forInterColumnViewWithReuseIdentifier:identifier];
+}
+
+- (void)registerNib:(UINib *)nib forSeparatorViewWithReuseIdentifier:(NSString *)identifier
+{
+    [_containerSheet registerNib:nib forInterRowViewWithReuseIdentifier:identifier];
+    [_containerSheet registerNib:nib forInterColumnViewWithReuseIdentifier:identifier];
+}
 
 - (void)registerClass:(Class)viewClass forSeparatorViewOfSeparatorType:(TAXHeaderSheetSeparatorType)separatorType withReuseIdentifier:(NSString *)identifier
 {
@@ -553,6 +568,14 @@ static NSString * const CellIdentifier = @"Cell";
 {
     TAXSpreadSheet *spreadSheet = _sheetArray[sectionType];
     return [spreadSheet dequeueReusableInterRowViewWithIdentifier:identifier belowRow:row];
+}
+
+# pragma mark -
+
+- (NSIndexPath *)indexPathForCell:(UICollectionViewCell *)cell inSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    TAXSpreadSheet *spreadSheet = [self p_spreadSheetForSectionType:sectionType];
+    return [spreadSheet indexPathForCell:cell];
 }
 
 @end

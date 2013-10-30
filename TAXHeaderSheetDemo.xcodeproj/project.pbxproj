@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C5AFB7D182103830006F7D9 /* TAXLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C5AFB7C182103830006F7D9 /* TAXLabelCell.m */; };
 		1CAFF121181F721A00BD4E4E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CAFF120181F721A00BD4E4E /* Foundation.framework */; };
 		1CAFF123181F721A00BD4E4E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CAFF122181F721A00BD4E4E /* CoreGraphics.framework */; };
 		1CAFF125181F721A00BD4E4E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CAFF124181F721A00BD4E4E /* UIKit.framework */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C5AFB7B182103830006F7D9 /* TAXLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAXLabelCell.h; sourceTree = "<group>"; };
+		1C5AFB7C182103830006F7D9 /* TAXLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAXLabelCell.m; sourceTree = "<group>"; };
 		1CAFF11D181F721A00BD4E4E /* TAXHeaderSheetDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TAXHeaderSheetDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CAFF120181F721A00BD4E4E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1CAFF122181F721A00BD4E4E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -130,6 +133,8 @@
 				1CAFF135181F721A00BD4E4E /* Main_iPad.storyboard */,
 				1CAFF138181F721A00BD4E4E /* ViewController.h */,
 				1CAFF139181F721A00BD4E4E /* ViewController.m */,
+				1C5AFB7B182103830006F7D9 /* TAXLabelCell.h */,
+				1C5AFB7C182103830006F7D9 /* TAXLabelCell.m */,
 				1CAFF13B181F721A00BD4E4E /* Images.xcassets */,
 				1CAFF127181F721A00BD4E4E /* Supporting Files */,
 			);
@@ -311,6 +316,7 @@
 				1CAFF131181F721A00BD4E4E /* AppDelegate.m in Sources */,
 				1CAFF15B181F7D7000BD4E4E /* TAXHeaderSheet.m in Sources */,
 				1CAFF12D181F721A00BD4E4E /* main.m in Sources */,
+				1C5AFB7D182103830006F7D9 /* TAXLabelCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,7 +407,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -435,7 +441,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -451,6 +457,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TAXHeaderSheetDemo/TAXHeaderSheetDemo-Prefix.pch";
 				INFOPLIST_FILE = "TAXHeaderSheetDemo/TAXHeaderSheetDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -465,6 +472,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TAXHeaderSheetDemo/TAXHeaderSheetDemo-Prefix.pch";
 				INFOPLIST_FILE = "TAXHeaderSheetDemo/TAXHeaderSheetDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -84,6 +84,9 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 #pragma mark - Separator views
 
 // Register Class for separator views
+- (void)registerClass:(Class)viewClass forSeparatorViewWithReuseIdentifier:(NSString *)identifier;
+- (void)registerNib:(UINib *)nib forSeparatorViewWithReuseIdentifier:(NSString *)identifier;
+
 - (void)registerClass:(Class)viewClass forSeparatorViewOfSeparatorType:(TAXHeaderSheetSeparatorType)separatorType withReuseIdentifier:(NSString *)identifier;
 - (void)registerNib:(UINib *)nib forSeparatorViewOfSeparatorType:(TAXHeaderSheetSeparatorType)separatorType withReuseIdentifier:(NSString *)identifier;
 
@@ -116,4 +119,5 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 - (UIView *)viewForSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (UIView *)viewForSeparatorType:(TAXHeaderSheetSeparatorType)separatorType;
 
+- (NSIndexPath *)indexPathForCell:(UICollectionViewCell *)cell inSectionType:(TAXHeaderSheetSectionType)sectionType;
 @end
