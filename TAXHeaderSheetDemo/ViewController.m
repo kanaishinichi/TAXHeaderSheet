@@ -65,10 +65,7 @@ static NSString * const SeparatorIdentifier = @"Separator";
     TAXLabelCell *cell = [headerSheet dequeueReusableCellInSectionType:sectionType withReuseIdentifier:CellIdentifier forRow:row column:column];
     
     switch (sectionType) {
-            case TAXHeaderSheetSectionTypeBody:{
-                UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedCell:)];
-                cell.gestureRecognizers = @[tapRecognizer];
-            }
+            case TAXHeaderSheetSectionTypeBody:
             case TAXHeaderSheetSectionTypeMiddleRight:
             case TAXHeaderSheetSectionTypeBottomMiddle:
             case TAXHeaderSheetSectionTypeBottomRight:{
@@ -78,10 +75,6 @@ static NSString * const SeparatorIdentifier = @"Separator";
             }
             case TAXHeaderSheetSectionTypeTopMiddle:
             case TAXHeaderSheetSectionTypeTopRight:{
-                UILongPressGestureRecognizer *pressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressedCell:)];
-                pressRecognizer.minimumPressDuration = 2.0;
-                cell.gestureRecognizers = @[pressRecognizer];
-                
                 cell.textLabel.text = [NSString stringWithFormat:@"Col %d", column];
                 cell.backgroundColor = [UIColor darkGrayColor];
                 cell.textLabel.textColor = [UIColor lightTextColor];
@@ -141,22 +134,9 @@ static NSString * const SeparatorIdentifier = @"Separator";
     return 1.0;
 }
 
-# pragma mark - Tap Handler
-
-- (void)tappedCell:(id)sender
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
-    UIGestureRecognizer *gestureRecognizer = (UIGestureRecognizer *)sender;
-    UICollectionViewCell *cell =  (UICollectionViewCell *)gestureRecognizer.view;
-    NSIndexPath *indexPath = [_headerSheet indexPathForCell:cell inSectionType:TAXHeaderSheetSectionTypeBody];
-    NSLog(@"Tapped row:%d column:%d", indexPath.section, indexPath.item);
-}
-
-- (void)pressedCell:(id)sender
-{
-    UIGestureRecognizer *gestureRecognizer = (UIGestureRecognizer *)sender;
-    UICollectionViewCell *cell =  (UICollectionViewCell *)gestureRecognizer.view;
-    NSIndexPath *indexPath = [_headerSheet indexPathForCell:cell inSectionType:TAXHeaderSheetSectionTypeTopMiddle];
-    NSLog(@"Long pressed column:%d", indexPath.item);
+    NSLog(@"Selected row:%d column:%d", indexPath.section, indexPath.item);
 }
 
 @end

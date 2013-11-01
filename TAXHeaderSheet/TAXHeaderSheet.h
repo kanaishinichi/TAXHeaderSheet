@@ -51,6 +51,24 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 - (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet interColumnViewInSectionType:(TAXHeaderSheetSectionType)sectionType afterColumn:(NSUInteger)column;
 - (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet interRowViewInSectionType:(TAXHeaderSheetSectionType)sectionType belowRow:(NSUInteger)row;
 
+// Fowarding UICollectionViewDelegate
+- (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didHighlightItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didDeselectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+
+- (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType withSender:(id)sender;
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType withSender:(id)sender;
+
+- (UICollectionViewTransitionLayout *)headerSheet:(TAXHeaderSheet *)headerSheet transitionLayoutForOldLayout:(UICollectionViewLayout *)fromLayout newLayout:(UICollectionViewLayout *)toLayout inSectionType:(TAXHeaderSheetSectionType)sectionType;
+
 @end
 
 #pragma mark - DataSource

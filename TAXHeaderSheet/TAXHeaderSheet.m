@@ -162,6 +162,12 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
+- (TAXHeaderSheetSectionType)p_sectionTypeForCollectionView:(UICollectionView *)collectionView
+{
+    TAXSpreadSheet *spreadSheet = (TAXSpreadSheet *)collectionView.superview;
+    return [self p_sectionTypeForSpreadSheet:spreadSheet];
+}
+
 #pragma mark
 
 - (UIView *)viewForSectionType:(TAXHeaderSheetSectionType)sectionType
@@ -529,6 +535,102 @@ static NSString * const CellIdentifier = @"Cell";
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft] setContentOffset:CGPointMake(0, scrollingOffset.y)];
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+    }
+}
+
+# pragma mark - Fowarding UICollectionView Delegate
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:shouldHighlightItemAtIndexPath:inSectionType:)]) {
+        return [_delegate headerSheet:self shouldHighlightItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    } else return YES;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:didHighlightItemAtIndexPath:inSectionType:)]) {
+        [_delegate headerSheet:self didHighlightItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:didUnhighlightItemAtIndexPath:inSectionType:)]) {
+        [_delegate headerSheet:self didUnhighlightItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    }
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:shouldSelectItemAtIndexPath:inSectionType:)]) {
+        return [_delegate headerSheet:self shouldSelectItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    } else return YES;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:shouldDeselectItemAtIndexPath:inSectionType:)]) {
+        return [_delegate headerSheet:self shouldDeselectItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    } else return YES;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:didSelectItemAtIndexPath:inSectionType:)]) {
+        [_delegate headerSheet:self didSelectItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:didDeselectItemAtIndexPath:inSectionType:)]) {
+        [_delegate headerSheet:self didDeselectItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:didEndDisplayingCell:forItemAtIndexPath:inSectionType:)]) {
+        [_delegate headerSheet:self didEndDisplayingCell:cell forItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:inSectionType:)]) {
+        [_delegate headerSheet:self didEndDisplayingSupplementaryView:view forElementOfKind:elementKind atIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    }
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:shouldShowMenuForItemAtIndexPath:inSectionType:)]) {
+        return [_delegate headerSheet:self shouldShowMenuForItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    } else return NO;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:canPerformAction:forItemAtIndexPath:inSectionType:withSender:)]) {
+        return [_delegate headerSheet:self canPerformAction:action forItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView] withSender:sender];
+    } else return NO;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:performAction:forItemAtIndexPath:inSectionType:withSender:)]) {
+        [_delegate headerSheet:self performAction:action forItemAtIndexPath:indexPath inSectionType:[self p_sectionTypeForCollectionView:collectionView] withSender:sender];
+    }
+}
+
+- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView transitionLayoutForOldLayout:(UICollectionViewLayout *)fromLayout newLayout:(UICollectionViewLayout *)toLayout
+{
+    if ([_delegate respondsToSelector:@selector(headerSheet:transitionLayoutForOldLayout:newLayout:inSectionType:)]) {
+        return [_delegate headerSheet:self transitionLayoutForOldLayout:fromLayout newLayout:toLayout inSectionType:[self p_sectionTypeForCollectionView:collectionView]];
+    } else {
+        UICollectionViewTransitionLayout *transitionLayout = [[UICollectionViewTransitionLayout alloc] initWithCurrentLayout:fromLayout nextLayout:toLayout];
+        return transitionLayout;
     }
 }
 
