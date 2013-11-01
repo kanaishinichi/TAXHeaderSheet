@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/kanaishinichi/TAXHeaderSheet.git", :tag => "0.1.0" }
   s.source_files  = 'TAXHeaderSheet/**/*.{h,m}'
   s.requires_arc = true
-  s.dependency   = 'TAXSpreadSheet', '>= 0.1.1'
+  s.dependency 'TAXSpreadSheet', '>= 0.1.1'
 end
