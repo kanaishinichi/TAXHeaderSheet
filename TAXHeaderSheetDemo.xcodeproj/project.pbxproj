@@ -24,6 +24,9 @@
 		1CAFF14D181F721A00BD4E4E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1CAFF14B181F721A00BD4E4E /* InfoPlist.strings */; };
 		1CAFF14F181F721A00BD4E4E /* TAXHeaderSheetDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CAFF14E181F721A00BD4E4E /* TAXHeaderSheetDemoTests.m */; };
 		1CAFF15B181F7D7000BD4E4E /* TAXHeaderSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CAFF15A181F7D7000BD4E4E /* TAXHeaderSheet.m */; };
+		1CBF9E4B1823584800898EE0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1CBF9E481823584800898EE0 /* LICENSE.txt */; };
+		1CBF9E4C1823584800898EE0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1CBF9E491823584800898EE0 /* README.md */; };
+		1CBF9E4D1823584800898EE0 /* TAXHeaderSheet.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 1CBF9E4A1823584800898EE0 /* TAXHeaderSheet.podspec */; };
 		5042F16A0FA34CA38A08D6FA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 987CAA0268D544DEAA5135D4 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +65,9 @@
 		1CAFF14E181F721A00BD4E4E /* TAXHeaderSheetDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TAXHeaderSheetDemoTests.m; sourceTree = "<group>"; };
 		1CAFF159181F7D7000BD4E4E /* TAXHeaderSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAXHeaderSheet.h; sourceTree = "<group>"; };
 		1CAFF15A181F7D7000BD4E4E /* TAXHeaderSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAXHeaderSheet.m; sourceTree = "<group>"; };
+		1CBF9E481823584800898EE0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		1CBF9E491823584800898EE0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		1CBF9E4A1823584800898EE0 /* TAXHeaderSheet.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TAXHeaderSheet.podspec; sourceTree = "<group>"; };
 		8D238572CC3841D6A4A4A643 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		987CAA0268D544DEAA5135D4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -94,6 +100,9 @@
 		1CAFF114181F721A00BD4E4E = {
 			isa = PBXGroup;
 			children = (
+				1CBF9E481823584800898EE0 /* LICENSE.txt */,
+				1CBF9E491823584800898EE0 /* README.md */,
+				1CBF9E4A1823584800898EE0 /* TAXHeaderSheet.podspec */,
 				1CAFF158181F7D7000BD4E4E /* TAXHeaderSheet */,
 				1CAFF126181F721A00BD4E4E /* TAXHeaderSheetDemo */,
 				1CAFF148181F721A00BD4E4E /* TAXHeaderSheetDemoTests */,
@@ -257,10 +266,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CBF9E4C1823584800898EE0 /* README.md in Resources */,
 				1CAFF137181F721A00BD4E4E /* Main_iPad.storyboard in Resources */,
 				1CAFF13C181F721A00BD4E4E /* Images.xcassets in Resources */,
 				1CAFF134181F721A00BD4E4E /* Main_iPhone.storyboard in Resources */,
+				1CBF9E4B1823584800898EE0 /* LICENSE.txt in Resources */,
 				1CAFF12B181F721A00BD4E4E /* InfoPlist.strings in Resources */,
+				1CBF9E4D1823584800898EE0 /* TAXHeaderSheet.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
