@@ -136,7 +136,11 @@ static NSString * const SeparatorIdentifier = @"Separator";
 
 - (void)headerSheet:(TAXHeaderSheet *)headerSheet didSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
-    NSLog(@"Selected row:%d column:%d", indexPath.section, indexPath.item);
+    if (sectionType == TAXHeaderSheetSectionTypeTopLeft) {
+        NSLog(@"Selected TopLeft");
+        _headerSheet.widthOfHeader += 10;
+        [_headerSheet setNeedsLayout];
+    }
 }
 
 @end

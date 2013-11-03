@@ -99,6 +99,16 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 // Number of rows/columns of each section.
 @property (nonatomic, assign) NSUInteger numberOfRowsOfBody, numberOfColumnsOfBody, numberOfRowsOfHeader, numberOfRowsOfFooter, numberOfColumnsOfHeader, numberOfColumnsOfFooter;
 
+// Inserting, moving, and deleting rows.
+- (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+
+// Inserting, moving, and deleting columns.
+- (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+
 #pragma mark - Separator views
 
 // Register Class for separator views
@@ -138,4 +148,5 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 - (UIView *)viewForSeparatorType:(TAXHeaderSheetSeparatorType)separatorType;
 
 - (NSIndexPath *)indexPathForCell:(UICollectionViewCell *)cell inSectionType:(TAXHeaderSheetSectionType)sectionType;
+
 @end
