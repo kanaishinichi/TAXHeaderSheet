@@ -40,7 +40,6 @@ static NSString * const CellIdentifier = @"Cell";
 
 - (void)p_setup
 {
-    self.backgroundColor = [UIColor redColor];
     self.sheetArray = [NSMutableArray arrayWithCapacity:9];
     self.separatorArray = [NSMutableArray arrayWithCapacity:4];
     self.classArray = [NSMutableArray arrayWithCapacity:9];
@@ -59,7 +58,6 @@ static NSString * const CellIdentifier = @"Cell";
     
     TAXSpreadSheet *containerSheet = [[TAXSpreadSheet alloc] initWithFrame:self.bounds];
     containerSheet.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    containerSheet.backgroundColor = [UIColor lightGrayColor];
     
     [containerSheet registerClass:[TAXSpreadSheet class] forCellWithReuseIdentifier:CellIdentifier];
     [containerSheet registerClass:[UICollectionReusableView class] forInterColumnViewWithReuseIdentifier:EmptyViewIdentifier];
@@ -242,6 +240,15 @@ static NSString * const CellIdentifier = @"Cell";
     } else {
         return (UIView *)_separatorArray[separatorType];
     }
+}
+
+- (void)reloadData
+{
+    [_sheetArray enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        if ([spreadSheet respondsToSelector:@selector(reloadData)]) {
+            [spreadSheet reloadData];
+        }
+    }];
 }
 
 # pragma mark - Inserting, Moving, and Deleting Rows/Columns

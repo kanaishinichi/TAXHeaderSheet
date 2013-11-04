@@ -17,8 +17,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mnb-rG-TMX">
+                                <rect key="frame" x="0.0" y="980" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="+Row" id="qS6-8B-9HR">
+                                        <connections>
+                                            <action selector="insertRowDidTap:" destination="BYZ-38-t0r" id="pUR-jH-DJd"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="-Row" id="381-If-QcG">
+                                        <connections>
+                                            <action selector="deleteRowDidTap:" destination="BYZ-38-t0r" id="FOV-nK-cQg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="MoveRow" id="cDx-ed-NF9">
+                                        <connections>
+                                            <action selector="moveRowDidTap:" destination="BYZ-38-t0r" id="Ath-A3-rtI"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="HXD-sE-mje"/>
+                                    <barButtonItem title="+Col" id="OIH-PA-GeL">
+                                        <connections>
+                                            <action selector="insertColumnDidTap:" destination="BYZ-38-t0r" id="40Z-XH-0d1"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3fw-Gm-KMg" customClass="TAXHeaderSheet">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="980"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="ovZ-CI-aEv"/>
@@ -26,12 +53,14 @@
                                 </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="3fw-Gm-KMg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="1cm-6C-jaa"/>
                             <constraint firstAttribute="trailing" secondItem="3fw-Gm-KMg" secondAttribute="trailing" id="Tjl-Sx-Sft"/>
-                            <constraint firstItem="3fw-Gm-KMg" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ZOf-nE-q3W"/>
-                            <constraint firstAttribute="bottom" secondItem="3fw-Gm-KMg" secondAttribute="bottom" id="p3L-jf-Qgp"/>
+                            <constraint firstItem="3fw-Gm-KMg" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="WZj-eQ-LMI"/>
+                            <constraint firstAttribute="bottom" secondItem="mnb-rG-TMX" secondAttribute="bottom" id="b9Y-pe-ays"/>
+                            <constraint firstAttribute="trailing" secondItem="mnb-rG-TMX" secondAttribute="trailing" id="fVj-3o-h8O"/>
+                            <constraint firstItem="mnb-rG-TMX" firstAttribute="top" secondItem="3fw-Gm-KMg" secondAttribute="bottom" id="h2d-FU-Jcp"/>
+                            <constraint firstItem="mnb-rG-TMX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="oTp-ec-2kN"/>
                         </constraints>
                     </view>
                     <connections>

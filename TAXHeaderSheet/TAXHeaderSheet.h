@@ -99,6 +99,8 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 // Number of rows/columns of each section.
 @property (nonatomic, assign) NSUInteger numberOfRowsOfBody, numberOfColumnsOfBody, numberOfRowsOfHeader, numberOfRowsOfFooter, numberOfColumnsOfHeader, numberOfColumnsOfFooter;
 
+- (void)reloadData;
+
 // Inserting, moving, and deleting rows.
 - (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType;

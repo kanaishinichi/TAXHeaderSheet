@@ -12,6 +12,10 @@
 
 @interface ViewController ()
 @property (nonatomic, weak) IBOutlet TAXHeaderSheet *headerSheet;
+- (IBAction)insertRowDidTap:(id)sender;
+- (IBAction)deleteRowDidTap:(id)sender;
+- (IBAction)moveRowDidTap:(id)sender;
+- (IBAction)insertColumnDidTap:(id)sender;
 @end
 
 @implementation ViewController
@@ -141,6 +145,34 @@ static NSString * const SeparatorIdentifier = @"Separator";
         _headerSheet.widthOfHeader += 10;
         [_headerSheet setNeedsLayout];
     }
+}
+
+# pragma mark - Handler methods
+
+- (IBAction)insertRowDidTap:(id)sender
+{
+    _headerSheet.numberOfRowsOfBody += 1;
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
+    [_headerSheet insertRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+}
+
+- (IBAction)deleteRowDidTap:(id)sender
+{
+    _headerSheet.numberOfRowsOfBody -= 1;
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
+    [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+}
+
+- (IBAction)moveRowDidTap:(id)sender
+{
+    [_headerSheet moveRow:5 toRow:2 inSectionType:TAXHeaderSheetSectionTypeBody];
+}
+
+- (IBAction)insertColumnDidTap:(id)sender
+{
+    _headerSheet.numberOfColumnsOfBody += 1;
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
+    [_headerSheet insertColumnsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
 }
 
 @end
