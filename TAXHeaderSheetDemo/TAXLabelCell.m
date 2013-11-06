@@ -35,7 +35,7 @@
 
 # pragma mark - Handler Methods
 
-- (void)capital:(id)sender
+- (void)deleteColumn:(id)sender
 {
     UIView *view = self;
     do {

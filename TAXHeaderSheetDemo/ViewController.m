@@ -138,22 +138,16 @@ static NSString * const SeparatorIdentifier = @"Separator";
     return 1.0;
 }
 
-- (void)headerSheet:(TAXHeaderSheet *)headerSheet didSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
-{
-    if (sectionType == TAXHeaderSheetSectionTypeTopLeft) {
-        NSLog(@"Selected TopLeft");
-        _headerSheet.widthOfHeader += 10;
-        [_headerSheet setNeedsLayout];
-    }
-}
-
 # pragma mark Menu
 
 - (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
-    if (sectionType == TAXHeaderSheetSectionTypeMiddleLeft ||
-        sectionType == TAXHeaderSheetSectionTypeBottomLeft) {
-        UIMenuItem *menuItem = [[UIMenuItem alloc] initWithTitle:@"Delete" action:NSSelectorFromString(@"deleteRow:")];
+    if (sectionType == TAXHeaderSheetSectionTypeMiddleLeft) {
+        UIMenuItem *menuItem = [[UIMenuItem alloc] initWithTitle:@"Delete Row" action:NSSelectorFromString(@"deleteRow:")];
+        [[UIMenuController sharedMenuController] setMenuItems:@[menuItem]];
+        return YES;
+    } else if (sectionType == TAXHeaderSheetSectionTypeTopMiddle) {
+        UIMenuItem *menuItem = [[UIMenuItem alloc] initWithTitle:@"Delete Column" action:NSSelectorFromString(@"deleteColumn:")];
         [[UIMenuController sharedMenuController] setMenuItems:@[menuItem]];
         return YES;
     } else return NO;
@@ -161,21 +155,20 @@ static NSString * const SeparatorIdentifier = @"Separator";
 
 - (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType withSender:(id)sender
 {
-    return (action == NSSelectorFromString(@"deleteRow:"));
+    return (action == NSSelectorFromString(@"deleteRow:") ||
+            action == NSSelectorFromString(@"deleteColumn:"));
 }
 
 - (void)headerSheet:(TAXHeaderSheet *)headerSheet performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType withSender:(id)sender
 {
     if (action == NSSelectorFromString(@"deleteRow:")) {
-        if (sectionType == TAXHeaderSheetSectionTypeMiddleLeft) {
-            _headerSheet.numberOfRowsOfBody -= 1;
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
-            [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
-        } else if (sectionType == TAXHeaderSheetSectionTypeBottomLeft) {
-            _headerSheet.numberOfRowsOfFooter -= 1;
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
-            [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
-        }
+        _headerSheet.numberOfRowsOfBody -= 1;
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
+        [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+    } else if (action == NSSelectorFromString(@"deleteColumn:")) {
+        _headerSheet.numberOfColumnsOfBody -= 1;
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.item];
+        [_headerSheet deleteColumnsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
     }
 }
 

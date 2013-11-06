@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e8J-Fz-Zjo" customClass="TAXHeaderSheet">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="Q5E-rN-4nu"/>
@@ -29,7 +29,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="e8J-Fz-Zjo" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="O9L-2F-2Dl"/>
-                            <constraint firstItem="e8J-Fz-Zjo" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="iPE-0D-ACe"/>
+                            <constraint firstItem="e8J-Fz-Zjo" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="20" id="iPE-0D-ACe"/>
                             <constraint firstAttribute="trailing" secondItem="e8J-Fz-Zjo" secondAttribute="trailing" id="mzi-IJ-wWD"/>
                             <constraint firstAttribute="bottom" secondItem="e8J-Fz-Zjo" secondAttribute="bottom" id="yYR-vI-SUn"/>
                         </constraints>

@@ -13,7 +13,6 @@
 
 @property (nonatomic) TAXSpreadSheet *containerSheet;
 @property (nonatomic) NSMutableArray *sheetArray, *separatorArray, *classArray, *nibArray;
-
 @end
 
 @implementation TAXHeaderSheet
@@ -666,8 +665,8 @@ static NSString * const CellIdentifier = @"Cell";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    TAXSpreadSheet *spreadSheet = (TAXSpreadSheet *)scrollView.superview;
-    TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForSpreadSheet:spreadSheet];
+    TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForCollectionView:(UICollectionView *)scrollView];
+
     if (sectionType == TAXHeaderSheetSectionTypeBody) {
         CGPoint scrollingOffset = scrollView.contentOffset;
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
