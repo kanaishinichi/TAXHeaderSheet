@@ -251,6 +251,33 @@ static NSString * const CellIdentifier = @"Cell";
     }];
 }
 
+# pragma mark - Properties
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [_sheetArray enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        if ([spreadSheet respondsToSelector:@selector(setBackgroundColor:)]) {
+            spreadSheet.backgroundColor = backgroundColor;
+        }
+    }];
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor inSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    TAXSpreadSheet *spreadSheet = [self p_spreadSheetForSectionType:sectionType];
+    if ([spreadSheet respondsToSelector:@selector(setBackgroundColor:)]) {
+        spreadSheet.backgroundColor = backgroundColor;
+    }
+}
+
+- (void)setBackgroundView:(UIView *)backgroundView inSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    TAXSpreadSheet *spreadSheet = [self p_spreadSheetForSectionType:sectionType];
+    if ([spreadSheet respondsToSelector:@selector(setBackgroundView:)]) {
+        spreadSheet.backgroundView = backgroundView;
+    }
+}
+
 # pragma mark - Inserting, Moving, and Deleting Rows/Columns
 
 // Inserting, moving, and deleting rows.
