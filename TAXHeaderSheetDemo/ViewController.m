@@ -9,9 +9,12 @@
 #import "ViewController.h"
 #import "TAXHeaderSheet.h"
 #import "TAXLabelCell.h"
+#import "TAXQuartzCell.h"
+#import "TAXContent.h"
 
-@interface ViewController ()
+@interface ViewController () <TAXHeaderSheetDataSource, TAXHeaderSheetDelegate>
 @property (nonatomic, weak) IBOutlet TAXHeaderSheet *headerSheet;
+@property (nonatomic) NSMutableArray *contents;
 - (IBAction)insertRowDidTap:(id)sender;
 - (IBAction)deleteRowDidTap:(id)sender;
 - (IBAction)moveRowDidTap:(id)sender;
@@ -21,6 +24,7 @@
 @implementation ViewController
 
 static NSString * const CellIdentifier = @"Cell";
+static NSString * const QuartzIdentifier = @"QuartzCell";
 static NSString * const SeparatorIdentifier = @"Separator";
 
 - (void)viewDidLoad
@@ -57,19 +61,43 @@ static NSString * const SeparatorIdentifier = @"Separator";
     
     // Register class for cells.
     [_headerSheet registerClass:[TAXLabelCell class] forCellInAllSectionWithReuseIdentifier:CellIdentifier];
+    [_headerSheet registerClass:[TAXQuartzCell class] forCellInSectionType:TAXHeaderSheetSectionTypeBody withReuseIdentifier:QuartzIdentifier];
 
     // Register class for separator views.
     [_headerSheet registerClass:[UICollectionReusableView class] forSeparatorViewWithReuseIdentifier:SeparatorIdentifier];
+    
+    [self p_createContents];
 }
 
+- (void)p_createContents
+{
+    // Create Contents Array
+    _contents = [[NSMutableArray alloc] initWithCapacity:_headerSheet.numberOfRowsOfBody];
+    for (NSUInteger row = 0; row < _headerSheet.numberOfRowsOfBody; row++) {
+        NSMutableArray *arrayOfEachRow = [[NSMutableArray alloc] initWithCapacity:_headerSheet.numberOfColumnsOfBody];
+        [_contents addObject:arrayOfEachRow];
+        for (NSUInteger column = 0; column < _headerSheet.numberOfColumnsOfBody; column++) {
+            // Contentを作成しArrayに格納
+            TAXContent *newContent = [[TAXContent alloc] initWithText:[NSString stringWithFormat:@"%d-%d", row, column]];
+            [_contents[row] addObject:newContent];
+        }
+    }
+}
 #pragma mark - HeaderSheet DataSource
 
 - (UICollectionViewCell*)headerSheet:(TAXHeaderSheet *)headerSheet cellAtRow:(NSUInteger)row column:(NSUInteger)column inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
+    if (sectionType == TAXHeaderSheetSectionTypeBody) {
+        TAXQuartzCell *cell = [headerSheet dequeueReusableCellInSectionType:TAXHeaderSheetSectionTypeBody withReuseIdentifier:QuartzIdentifier forRow:row column:column];
+        cell.content = _contents[row][column];
+        cell.backgroundColor = [UIColor whiteColor];
+        return cell;
+    }
+    
     TAXLabelCell *cell = [headerSheet dequeueReusableCellInSectionType:sectionType withReuseIdentifier:CellIdentifier forRow:row column:column];
     
     switch (sectionType) {
-            case TAXHeaderSheetSectionTypeBody:
+//            case TAXHeaderSheetSectionTypeBody:
             case TAXHeaderSheetSectionTypeMiddleRight:
             case TAXHeaderSheetSectionTypeBottomMiddle:
             case TAXHeaderSheetSectionTypeBottomRight:{
@@ -163,10 +191,14 @@ static NSString * const SeparatorIdentifier = @"Separator";
 {
     if (action == NSSelectorFromString(@"deleteRow:")) {
         _headerSheet.numberOfRowsOfBody -= 1;
+        [self p_createContents];
+        
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
         [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
     } else if (action == NSSelectorFromString(@"deleteColumn:")) {
         _headerSheet.numberOfColumnsOfBody -= 1;
+        [self p_createContents];
+
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.item];
         [_headerSheet deleteColumnsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
     }
@@ -177,6 +209,8 @@ static NSString * const SeparatorIdentifier = @"Separator";
 - (IBAction)insertRowDidTap:(id)sender
 {
     _headerSheet.numberOfRowsOfBody += 1;
+    [self p_createContents];
+    
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
     [_headerSheet insertRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
 }
@@ -184,6 +218,8 @@ static NSString * const SeparatorIdentifier = @"Separator";
 - (IBAction)deleteRowDidTap:(id)sender
 {
     _headerSheet.numberOfRowsOfBody -= 1;
+    [self p_createContents];
+    
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
     [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
 }
@@ -196,6 +232,8 @@ static NSString * const SeparatorIdentifier = @"Separator";
 - (IBAction)insertColumnDidTap:(id)sender
 {
     _headerSheet.numberOfColumnsOfBody += 1;
+    [self p_createContents];
+    
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
     [_headerSheet insertColumnsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
 }
