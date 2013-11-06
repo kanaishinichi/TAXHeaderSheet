@@ -33,4 +33,32 @@
 }
 */
 
+# pragma mark - Handler Methods
+
+- (void)capital:(id)sender
+{
+    UIView *view = self;
+    do {
+        view = view.superview;
+    } while (![view isKindOfClass:[UICollectionView class]]);
+    UICollectionView *collectionView = (UICollectionView *)view;
+    NSIndexPath *indexPath = [collectionView indexPathForCell:self];
+    if ([collectionView.delegate respondsToSelector:@selector(collectionView:performAction:forItemAtIndexPath:withSender:)]) {
+        [collectionView.delegate collectionView:collectionView performAction:_cmd forItemAtIndexPath:indexPath withSender:sender];
+    }
+}
+
+- (void)deleteRow:(id)sender
+{
+    UIView *view = self;
+    do {
+        view = view.superview;
+    } while (![view isKindOfClass:[UICollectionView class]]);
+    UICollectionView *collectionView = (UICollectionView *)view;
+    NSIndexPath *indexPath = [collectionView indexPathForCell:self];
+    if ([collectionView.delegate respondsToSelector:@selector(collectionView:performAction:forItemAtIndexPath:withSender:)]) {
+        [collectionView.delegate collectionView:collectionView performAction:_cmd forItemAtIndexPath:indexPath withSender:sender];
+    }
+}
+
 @end
