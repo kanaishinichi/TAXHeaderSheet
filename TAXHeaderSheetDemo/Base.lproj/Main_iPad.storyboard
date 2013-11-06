@@ -26,11 +26,6 @@
                                             <action selector="insertRowDidTap:" destination="BYZ-38-t0r" id="pUR-jH-DJd"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="-Row" id="381-If-QcG">
-                                        <connections>
-                                            <action selector="deleteRowDidTap:" destination="BYZ-38-t0r" id="FOV-nK-cQg"/>
-                                        </connections>
-                                    </barButtonItem>
                                     <barButtonItem title="MoveRow" id="cDx-ed-NF9">
                                         <connections>
                                             <action selector="moveRowDidTap:" destination="BYZ-38-t0r" id="Ath-A3-rtI"/>
@@ -40,6 +35,11 @@
                                     <barButtonItem title="+Col" id="OIH-PA-GeL">
                                         <connections>
                                             <action selector="insertColumnDidTap:" destination="BYZ-38-t0r" id="40Z-XH-0d1"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="MoveCol" id="14g-nl-x3Q">
+                                        <connections>
+                                            <action selector="moveColumnDidTap:" destination="BYZ-38-t0r" id="JnO-0c-EQP"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>

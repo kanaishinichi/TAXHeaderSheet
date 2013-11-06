@@ -13,9 +13,9 @@
 @interface ViewController ()
 @property (nonatomic, weak) IBOutlet TAXHeaderSheet *headerSheet;
 - (IBAction)insertRowDidTap:(id)sender;
-- (IBAction)deleteRowDidTap:(id)sender;
 - (IBAction)moveRowDidTap:(id)sender;
 - (IBAction)insertColumnDidTap:(id)sender;
+- (IBAction)moveColumnDidTap:(id)sender;
 @end
 
 @implementation ViewController
@@ -51,7 +51,7 @@ static NSString * const SeparatorIdentifier = @"Separator";
     
     // Set size of separator
     _headerSheet.heightOfSeparatorTop = 2;
-    _headerSheet.heightOfSeparatorBottom = 2;
+    _headerSheet.heightOfSeparatorBottom = 4;
     _headerSheet.widthOfSeparatorLeft = 1;
     _headerSheet.widthOfSeparatorRight = 1;
     
@@ -138,6 +138,18 @@ static NSString * const SeparatorIdentifier = @"Separator";
     return 1.0;
 }
 
+- (void)headerSheet:(TAXHeaderSheet *)headerSheet didSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    if (sectionType == TAXHeaderSheetSectionTypeBody) {
+        NSString *message = [NSString stringWithFormat:@"Row:%d Column:%d \nhas tapped.", indexPath.section, indexPath.item];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:message delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"OK", nil];
+        [alertView show];
+    }
+}
+
 # pragma mark Menu
 
 - (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
@@ -181,13 +193,6 @@ static NSString * const SeparatorIdentifier = @"Separator";
     [_headerSheet insertRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
 }
 
-- (IBAction)deleteRowDidTap:(id)sender
-{
-    _headerSheet.numberOfRowsOfBody -= 1;
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
-    [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
-}
-
 - (IBAction)moveRowDidTap:(id)sender
 {
     [_headerSheet moveRow:5 toRow:2 inSectionType:TAXHeaderSheetSectionTypeBody];
@@ -198,6 +203,11 @@ static NSString * const SeparatorIdentifier = @"Separator";
     _headerSheet.numberOfColumnsOfBody += 1;
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
     [_headerSheet insertColumnsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+}
+
+- (IBAction)moveColumnDidTap:(id)sender
+{
+    [_headerSheet moveColumn:5 toColumn:2 inSectionType:TAXHeaderSheetSectionTypeBody];
 }
 
 @end

@@ -10,13 +10,13 @@ iOS 6.0 or later
 
 ##Dependency
 
-TAXSpreadSheet 0.1.1 or later
+TAXSpreadSheet 0.2.0 or later
 
 ##Installation
 via CocoaPods
 
 ```Podfile
-pod 'TAXHeaderSheet', :git => 'https://github.com/kanaishinichi/TAXHeaderSheet.git'
+pod 'TAXHeaderSheet'
 ```
 
 ##Usage
@@ -111,3 +111,8 @@ In case of not using view, return nil.
 ##License
 
 MIT License
+
+##Change Log
+###0.2.0
+- [Add] Methods for inserting, moving, deleting rows/columns.
+- [Add] Methods for setting background color/view.
