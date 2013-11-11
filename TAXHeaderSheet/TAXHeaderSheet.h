@@ -50,28 +50,31 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
 @protocol TAXHeaderSheetDelegate <NSObject>
 
 @optional
-// Separator Views of container
+# pragma mark Separator Views of container
 - (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet separatorViewOfSeparatorType:(TAXHeaderSheetSeparatorType)separatorType;
 
-// Size of cell in each sheet
+# pragma mark  Size of cell in each sheet
 - (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet heightAtRow:(NSUInteger)row ofHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
 - (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet widthAtColumn:(NSUInteger)column ofVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
 
 /// Deprecated
-- (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet heightAtRow:(NSUInteger)row ofSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet heightAtRow:(NSUInteger)row ofSectionType:(TAXHeaderSheetSectionType)sectionType  __attribute__ ((deprecated));
 
 /// Deprecated
-- (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet widthAtColumn:(NSUInteger)column ofSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet widthAtColumn:(NSUInteger)column ofSectionType:(TAXHeaderSheetSectionType)sectionType  __attribute__ ((deprecated));
 
-// Inter-column/row spacing of each sheet
+# pragma mark Inter-column/row spacing of each sheet
+
 - (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet bottomSpacingBelowRow:(NSUInteger)row inSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet trailingSpacingAfterColumn:(NSUInteger)column inSectionType:(TAXHeaderSheetSectionType)sectionType;
 
-// Inter-column/row view of each sheet
+# pragma mark Inter-column/row view of each sheet
+
 - (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet interColumnViewInSectionType:(TAXHeaderSheetSectionType)sectionType afterColumn:(NSUInteger)column;
 - (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet interRowViewInSectionType:(TAXHeaderSheetSectionType)sectionType belowRow:(NSUInteger)row;
 
-// Fowarding UICollectionViewDelegate
+# pragma mark Fowarding UICollectionViewDelegate
+
 - (BOOL)headerSheet:(TAXHeaderSheet *)headerSheet shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (void)headerSheet:(TAXHeaderSheet *)headerSheet didHighlightItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (void)headerSheet:(TAXHeaderSheet *)headerSheet didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType;
@@ -95,7 +98,12 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
 
 @protocol TAXHeaderSheetDataSource <NSObject>
 
+@required
 - (UICollectionViewCell*)headerSheet:(TAXHeaderSheet *)headerSheet cellAtRow:(NSUInteger)row column:(NSUInteger)column inSectionType:(TAXHeaderSheetSectionType)sectionType;
+
+- (NSInteger)headerSheet:(TAXHeaderSheet *)headerSheet numberOfRowsInHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
+
+- (NSInteger)headerSheet:(TAXHeaderSheet *)headerSheet numberOfColumnsInVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
 
 @end
 
@@ -117,7 +125,7 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
 @property (nonatomic, assign) CGFloat widthOfHeaderCell, widthOfFooterCell, heightOfHeaderCell, heightOfFooterCell;
 
 // Number of rows/columns of each section.
-@property (nonatomic, assign) NSUInteger numberOfRowsOfBody, numberOfColumnsOfBody, numberOfRowsOfHeader, numberOfRowsOfFooter, numberOfColumnsOfHeader, numberOfColumnsOfFooter;
+@property (nonatomic, assign) NSUInteger numberOfRowsOfBody __attribute__ ((deprecated)), numberOfColumnsOfBody __attribute__ ((deprecated)), numberOfRowsOfHeader __attribute__ ((deprecated)), numberOfRowsOfFooter __attribute__ ((deprecated)), numberOfColumnsOfHeader __attribute__ ((deprecated)), numberOfColumnsOfFooter __attribute__ ((deprecated));
 
 // BackgroundColor/View
 - (void)setBackgroundColor:(UIColor *)backgroundColor inSectionType:(TAXHeaderSheetSectionType)sectionType;
@@ -131,11 +139,11 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
 - (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
 
 /// Deprecated
-- (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType __attribute__ ((deprecated));
 /// Deprecated
-- (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType __attribute__ ((deprecated));
 /// Deprecated
-- (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType __attribute__ ((deprecated));
 
 // Inserting, moving, and deleting columns.
 - (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
@@ -143,11 +151,11 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
 - (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
 
 /// Deprecated
-- (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType __attribute__ ((deprecated));
 /// Deprecated
-- (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inSectionType:(TAXHeaderSheetSectionType)sectionType __attribute__ ((deprecated));
 /// Deprecated
-- (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+- (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType __attribute__ ((deprecated));
 
 #pragma mark - Separator views
 

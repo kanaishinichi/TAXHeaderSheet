@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "TAXHeaderSheet"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "A spreadsheet view that have header/footer."
   s.homepage     = "https://github.com/kanaishinichi/TAXHeaderSheet"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }

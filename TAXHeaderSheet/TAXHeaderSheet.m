@@ -69,7 +69,7 @@ static NSString * const CellIdentifier = @"Cell";
     self.containerSheet = containerSheet;
     [self addSubview:containerSheet];
     
-    // Default Size
+    // Default Size    
     self.heightOfHeader = 100.0;
     self.heightOfFooter = 100.0;
     self.widthOfHeader = 100.0;
@@ -350,30 +350,6 @@ static NSString * const CellIdentifier = @"Cell";
     }];
 }
 
-// !!!:Deprecated
-- (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
-{
-    for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
-        [spreadSheet insertRows:indexPaths];
-    }
-}
-
-// !!!:Deprecated
-- (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType
-{
-    for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
-        [spreadSheet moveRow:fromRow toRow:toRow];
-    }
-}
-
-// !!!:Deprecated
-- (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
-{
-    for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
-        [spreadSheet deleteRows:indexPaths];
-    }
-}
-
 // Inserting, moving, and deleting columns.
 
 - (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
@@ -397,7 +373,29 @@ static NSString * const CellIdentifier = @"Cell";
     }];
 }
 
-// !!!:Deprecated
+# pragma mark - Deprecated Methods
+
+- (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
+        [spreadSheet insertRows:indexPaths];
+    }
+}
+
+- (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
+        [spreadSheet moveRow:fromRow toRow:toRow];
+    }
+}
+
+- (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
+        [spreadSheet deleteRows:indexPaths];
+    }
+}
+
 - (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameColumnAsSectionType:sectionType]) {
@@ -405,7 +403,6 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
-// !!!:Deprecated
 - (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameColumnAsSectionType:sectionType]) {
@@ -413,7 +410,6 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
-// !!!:Deprecated
 - (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameColumnAsSectionType:sectionType]) {
@@ -421,8 +417,10 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
-#pragma mark - SpreadSheet DataSource
+# pragma mark - SpreadSheet DataSource
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (NSUInteger)numberOfRowsInSpreadSheet:(TAXSpreadSheet *)spreadSheet
 {
     if (spreadSheet == _containerSheet) {
@@ -431,22 +429,37 @@ static NSString * const CellIdentifier = @"Cell";
         NSIndexPath *indexPath = [_containerSheet indexPathForCell:spreadSheet];
         NSUInteger row = indexPath.section;
         switch (row) {
-            case 0:
-                return self.numberOfRowsOfHeader;
+            case 0:{
+                NSInteger rowsOfTop = [_dataSource headerSheet:self numberOfRowsInHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeTop];
+                if (rowsOfTop != NSNotFound) {
+                    return rowsOfTop;
+                } else return _numberOfRowsOfHeader;
                 break;
-            case 1:
-                return self.numberOfRowsOfBody;
+            }
+            case 1:{
+                NSInteger rowsOfMiddle = [_dataSource headerSheet:self numberOfRowsInHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
+                if (rowsOfMiddle != NSNotFound) {
+                    return rowsOfMiddle;
+                } else return _numberOfRowsOfBody;
                 break;
-            case 2:
-                return self.numberOfRowsOfFooter;
+            }
+            case 2:{
+                NSInteger rowsOfBottom = [_dataSource headerSheet:self numberOfRowsInHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeBottom];
+                if (rowsOfBottom != NSNotFound) {
+                    return rowsOfBottom;
+                } else return _numberOfRowsOfFooter;
                 break;
+            }
             default:
                 return 0;
                 break;
         }
     }
 }
+#pragma clang diagnostic pop
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (NSUInteger)numberOfColumnsInSpreadSheet:(TAXSpreadSheet *)spreadSheet
 {
     if (spreadSheet == _containerSheet) {
@@ -455,21 +468,34 @@ static NSString * const CellIdentifier = @"Cell";
         NSIndexPath *indexPath = [_containerSheet indexPathForCell:spreadSheet];
         NSUInteger column = indexPath.item;
         switch (column) {
-            case 0:
-                return self.numberOfColumnsOfHeader;
+            case 0:{
+                NSInteger columnsOfLeft = [_dataSource headerSheet:self numberOfColumnsInVerticalSectionType:TAXHeaderSheetVerticalSectionTypeLeft];
+                if (columnsOfLeft != NSNotFound) {
+                    return columnsOfLeft;
+                } else return _numberOfColumnsOfHeader;
                 break;
-            case 1:
-                return self.numberOfColumnsOfBody;
+            }
+            case 1:{
+                NSInteger columnsOfMiddle = [_dataSource headerSheet:self numberOfColumnsInVerticalSectionType:TAXHeaderSheetVerticalSectionTypeMiddle];
+                if (columnsOfMiddle != NSNotFound) {
+                    return columnsOfMiddle;
+                } else return _numberOfColumnsOfBody;
                 break;
-            case 2:
-                return self.numberOfColumnsOfFooter;
+            }
+            case 2:{
+                NSInteger columnsOfRight = [_dataSource headerSheet:self numberOfColumnsInVerticalSectionType:TAXHeaderSheetVerticalSectionTypeRight];
+                if (columnsOfRight != NSNotFound) {
+                    return columnsOfRight;
+                } else return _numberOfColumnsOfFooter;
                 break;
+            }
             default:
                 return 0;
                 break;
         }
     }
 }
+#pragma clang diagnostic pop
 
 - (UICollectionViewCell*)spreadSheet:(TAXSpreadSheet *)spreadSheet cellAtRow:(NSUInteger)row column:(NSUInteger)column
 {
@@ -602,6 +628,8 @@ static NSString * const CellIdentifier = @"Cell";
 
 # pragma mark - SpreadSheet Delegate
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (CGFloat)spreadSheet:(TAXSpreadSheet *)spreadSheet widthAtColumn:(NSUInteger)column
 {
     if ([spreadSheet isEqual:_containerSheet]) {
@@ -627,7 +655,6 @@ static NSString * const CellIdentifier = @"Cell";
                             CGFloat topLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
                             CGFloat middleLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
                             CGFloat bottomLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
-                            
                             if (topLeft != NSNotFound) {
                                 return topLeft;
                             } else if (bottomLeft != NSNotFound) {
@@ -648,7 +675,6 @@ static NSString * const CellIdentifier = @"Cell";
                             CGFloat topMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
                             CGFloat body = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBody];
                             CGFloat bottomMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
-                            
                             if (topMiddle != NSNotFound) {
                                 return topMiddle;
                             } else if (bottomMiddle != NSNotFound) {
@@ -669,7 +695,6 @@ static NSString * const CellIdentifier = @"Cell";
                             CGFloat topRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopRight];
                             CGFloat middleRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
                             CGFloat bottomRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
-                            
                             if (topRight != NSNotFound) {
                                 return topRight;
                             } else if (bottomRight != NSNotFound) {
@@ -698,7 +723,10 @@ static NSString * const CellIdentifier = @"Cell";
         }
     }
 }
+#pragma clang diagnostic ppo
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (CGFloat)spreadSheet:(TAXSpreadSheet *)spreadSheet heightAtRow:(NSUInteger)row
 {
     if ([spreadSheet isEqual:_containerSheet]) {
@@ -725,7 +753,6 @@ static NSString * const CellIdentifier = @"Cell";
                             CGFloat topLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
                             CGFloat topMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
                             CGFloat topRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopRight];
-                            
                             if (topLeft != NSNotFound) {
                                 return topLeft;
                             } else if (topMiddle != NSNotFound) {
@@ -746,7 +773,6 @@ static NSString * const CellIdentifier = @"Cell";
                             CGFloat middleLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
                             CGFloat body = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBody];
                             CGFloat middleRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
-                            
                             if (middleLeft != NSNotFound) {
                                 return middleLeft;
                             } else if (body != NSNotFound) {
@@ -767,7 +793,6 @@ static NSString * const CellIdentifier = @"Cell";
                             CGFloat bottomLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
                             CGFloat bottomMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
                             CGFloat bottomRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
-                            
                             if (bottomLeft != NSNotFound) {
                                 return bottomLeft;
                             } else if (bottomMiddle != NSNotFound) {
@@ -796,6 +821,7 @@ static NSString * const CellIdentifier = @"Cell";
         }
     }
 }
+#pragma clang diagnostic pop
 
 # pragma mark - ScrollView Delegate
 

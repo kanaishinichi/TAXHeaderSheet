@@ -12,6 +12,9 @@
 
 @interface ViewController ()
 @property (nonatomic, weak) IBOutlet TAXHeaderSheet *headerSheet;
+@property (nonatomic) NSInteger numberOfRowsOfBody, numberOfColumnsOfBody;
+@property (nonatomic) NSInteger numberOfRowsOfHeader, numberOfColumnsOfHeader;
+@property (nonatomic) NSInteger numberOfRowsOfFooter, numberOfColumnsOfFooter;
 - (IBAction)insertRowDidTap:(id)sender;
 - (IBAction)moveRowDidTap:(id)sender;
 - (IBAction)insertColumnDidTap:(id)sender;
@@ -29,13 +32,13 @@ static NSString * const SeparatorIdentifier = @"Separator";
 	// Do any additional setup after loading the view, typically from a nib.
 
     // Set spreadsheet metrics.
-    _headerSheet.numberOfRowsOfBody = 30;
-    _headerSheet.numberOfColumnsOfBody = 20;
+    self.numberOfRowsOfBody = 30;
+    self.numberOfColumnsOfBody = 20;
 
-    _headerSheet.numberOfRowsOfHeader = 1;
-    _headerSheet.numberOfRowsOfFooter = 2;
-    _headerSheet.numberOfColumnsOfHeader = 1;
-    _headerSheet.numberOfColumnsOfFooter = 1;
+    self.numberOfRowsOfHeader = 1;
+    self.numberOfRowsOfFooter = 2;
+    self.numberOfColumnsOfHeader = 1;
+    self.numberOfColumnsOfFooter = 1;
 
     // Set size of cell in each section
     _headerSheet.sizeForCell = CGSizeMake(50.0, 20.0);
@@ -44,10 +47,10 @@ static NSString * const SeparatorIdentifier = @"Separator";
     _headerSheet.heightOfHeaderCell = 20.0;
     _headerSheet.heightOfFooterCell = 20.0;
     
-    _headerSheet.heightOfHeader = _headerSheet.heightOfHeaderCell * _headerSheet.numberOfRowsOfHeader;
-    _headerSheet.heightOfFooter = _headerSheet.heightOfFooterCell * _headerSheet.numberOfRowsOfFooter;
-    _headerSheet.widthOfHeader = _headerSheet.widthOfHeaderCell * _headerSheet.numberOfColumnsOfHeader;
-    _headerSheet.widthOfFooter = _headerSheet.widthOfFooterCell * _headerSheet.numberOfColumnsOfFooter;
+    _headerSheet.heightOfHeader = _headerSheet.heightOfHeaderCell * _numberOfRowsOfHeader;
+    _headerSheet.heightOfFooter = _headerSheet.heightOfFooterCell * _numberOfRowsOfFooter;
+    _headerSheet.widthOfHeader = _headerSheet.widthOfHeaderCell * _numberOfColumnsOfHeader;
+    _headerSheet.widthOfFooter = _headerSheet.widthOfFooterCell * _numberOfColumnsOfFooter;
     
     // Set size of separator
     _headerSheet.heightOfSeparatorTop = 2;
@@ -102,28 +105,40 @@ static NSString * const SeparatorIdentifier = @"Separator";
     return cell;
 }
 
-- (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet separatorViewOfSeparatorType:(TAXHeaderSheetSeparatorType)separatorType
+- (NSInteger)headerSheet:(TAXHeaderSheet *)headerSheet numberOfRowsInHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType
 {
-    UICollectionReusableView *view = [_headerSheet dequeueReusableSeparatorViewOfSeparatorType:separatorType withReuseIdentifier:SeparatorIdentifier];
-
-    switch (separatorType) {
-            case TAXHeaderSheetSeparatorTypeTop:{
-                view.backgroundColor = [UIColor blueColor];
-                break;
-            }
-            case TAXHeaderSheetSeparatorTypeBottom:{
-                view.backgroundColor = [UIColor redColor];
-                break;
-            }
-            case TAXHeaderSheetSeparatorTypeRight:{
-                view.backgroundColor = [UIColor greenColor];
-                break;
-            }
+    switch (horizontalSectionType) {
+        case TAXHeaderSheetHorizontalSectionTypeTop:
+            return _numberOfRowsOfHeader;
+            break;
+        case TAXHeaderSheetHorizontalSectionTypeMiddle:
+            return _numberOfRowsOfBody;
+            break;
+        case TAXHeaderSheetHorizontalSectionTypeBottom:
+            return _numberOfRowsOfFooter;
+            break;
         default:
-            return nil;
+            return NSNotFound;
             break;
     }
-    return view;
+}
+
+- (NSInteger)headerSheet:(TAXHeaderSheet *)headerSheet numberOfColumnsInVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
+{
+    switch (verticalSectionType) {
+        case TAXHeaderSheetVerticalSectionTypeLeft:
+            return _numberOfColumnsOfHeader;
+            break;
+        case TAXHeaderSheetVerticalSectionTypeMiddle:
+            return _numberOfColumnsOfBody;
+            break;
+        case TAXHeaderSheetVerticalSectionTypeRight:
+            return _numberOfColumnsOfFooter;
+            break;
+        default:
+            return NSNotFound;
+            break;
+    }
 }
 
 # pragma mark - HeaderSheet Delegate
@@ -136,6 +151,30 @@ static NSString * const SeparatorIdentifier = @"Separator";
 - (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet trailingSpacingAfterColumn:(NSUInteger)column inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     return 1.0;
+}
+
+- (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet separatorViewOfSeparatorType:(TAXHeaderSheetSeparatorType)separatorType
+{
+    UICollectionReusableView *view = [_headerSheet dequeueReusableSeparatorViewOfSeparatorType:separatorType withReuseIdentifier:SeparatorIdentifier];
+    
+    switch (separatorType) {
+        case TAXHeaderSheetSeparatorTypeTop:{
+            view.backgroundColor = [UIColor blueColor];
+            break;
+        }
+        case TAXHeaderSheetSeparatorTypeBottom:{
+            view.backgroundColor = [UIColor redColor];
+            break;
+        }
+        case TAXHeaderSheetSeparatorTypeRight:{
+            view.backgroundColor = [UIColor greenColor];
+            break;
+        }
+        default:
+            return nil;
+            break;
+    }
+    return view;
 }
 
 - (void)headerSheet:(TAXHeaderSheet *)headerSheet didSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
@@ -174,11 +213,11 @@ static NSString * const SeparatorIdentifier = @"Separator";
 - (void)headerSheet:(TAXHeaderSheet *)headerSheet performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType withSender:(id)sender
 {
     if (action == NSSelectorFromString(@"deleteRow:")) {
-        _headerSheet.numberOfRowsOfBody -= 1;
+        self.numberOfRowsOfBody -= 1;
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
         [_headerSheet deleteRowsAtIndexPaths:indexSet inHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
     } else if (action == NSSelectorFromString(@"deleteColumn:")) {
-        _headerSheet.numberOfColumnsOfBody -= 1;
+        self.numberOfColumnsOfBody -= 1;
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.item];
         [_headerSheet deleteColumnsAtIndexPaths:indexSet inVerticalSectionType:TAXHeaderSheetVerticalSectionTypeMiddle];
     }
@@ -188,21 +227,19 @@ static NSString * const SeparatorIdentifier = @"Separator";
 
 - (IBAction)insertRowDidTap:(id)sender
 {
-    _headerSheet.numberOfRowsOfBody += 1;
+    self.numberOfRowsOfBody += 1;
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
-//    [_headerSheet insertRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
     [_headerSheet insertRowsAtIndexPaths:indexSet inHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
 }
 
 - (IBAction)moveRowDidTap:(id)sender
 {
-//    [_headerSheet moveRow:5 toRow:2 inSectionType:TAXHeaderSheetSectionTypeBody];
     [_headerSheet moveRow:5 toRow:2 inHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
 }
 
 - (IBAction)insertColumnDidTap:(id)sender
 {
-    _headerSheet.numberOfColumnsOfBody += 1;
+    self.numberOfColumnsOfBody += 1;
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
     [_headerSheet insertColumnsAtIndexPaths:indexSet inVerticalSectionType:TAXHeaderSheetVerticalSectionTypeMiddle];
 }
