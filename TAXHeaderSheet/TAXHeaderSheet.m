@@ -225,6 +225,54 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
+- (NSArray *)p_spreadSheetsOfHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType
+{
+    switch (horizontalSectionType) {
+        case TAXHeaderSheetHorizontalSectionTypeTop:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight]];
+            break;
+        case TAXHeaderSheetHorizontalSectionTypeMiddle:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight]];
+            break;
+        case TAXHeaderSheetHorizontalSectionTypeBottom:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
+            break;
+        default:
+            return nil;
+            break;
+    }
+}
+
+- (NSArray *)p_spreadSheetsOfVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
+{
+    switch (verticalSectionType) {
+        case TAXHeaderSheetVerticalSectionTypeLeft:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft]];
+            break;
+        case TAXHeaderSheetVerticalSectionTypeMiddle:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle]];
+            break;
+        case TAXHeaderSheetVerticalSectionTypeRight:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
+            break;
+        default:
+            return nil;
+            break;
+    }
+}
+
 #pragma mark
 
 - (UIView *)viewForSectionType:(TAXHeaderSheetSectionType)sectionType
@@ -280,6 +328,29 @@ static NSString * const CellIdentifier = @"Cell";
 # pragma mark - Inserting, Moving, and Deleting Rows/Columns
 
 // Inserting, moving, and deleting rows.
+
+- (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType
+{
+    [[self p_spreadSheetsOfHorizontalSectionType:horizontalSectionType] enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        [spreadSheet insertRows:indexPaths];
+    }];
+}
+
+- (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType
+{
+    [[self p_spreadSheetsOfHorizontalSectionType:horizontalSectionType] enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        [spreadSheet moveRow:fromRow toRow:toRow];
+    }];
+}
+
+- (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType
+{
+    [[self p_spreadSheetsOfHorizontalSectionType:horizontalSectionType] enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        [spreadSheet deleteRows:indexPaths];
+    }];
+}
+
+// !!!:Deprecated
 - (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
@@ -287,6 +358,7 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
+// !!!:Deprecated
 - (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
@@ -294,6 +366,7 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
+// !!!:Deprecated
 - (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameRowAsSectionType:sectionType]) {
@@ -302,6 +375,29 @@ static NSString * const CellIdentifier = @"Cell";
 }
 
 // Inserting, moving, and deleting columns.
+
+- (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
+{
+    [[self p_spreadSheetsOfVerticalSectionType:verticalSectionType] enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        [spreadSheet insertColumns:indexPaths];
+    }];
+}
+
+- (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
+{
+    [[self p_spreadSheetsOfVerticalSectionType:verticalSectionType] enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        [spreadSheet moveColumn:fromColumn toColumn:toColumn];
+    }];
+}
+
+- (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
+{
+    [[self p_spreadSheetsOfVerticalSectionType:verticalSectionType] enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        [spreadSheet deleteColumns:indexPaths];
+    }];
+}
+
+// !!!:Deprecated
 - (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameColumnAsSectionType:sectionType]) {
@@ -309,12 +405,15 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
+// !!!:Deprecated
 - (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameColumnAsSectionType:sectionType]) {
         [spreadSheet moveColumn:fromColumn toColumn:toColumn];
     }
 }
+
+// !!!:Deprecated
 - (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     for (TAXSpreadSheet *spreadSheet in [self p_spreadSheetsSameColumnAsSectionType:sectionType]) {

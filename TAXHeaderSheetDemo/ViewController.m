@@ -176,11 +176,11 @@ static NSString * const SeparatorIdentifier = @"Separator";
     if (action == NSSelectorFromString(@"deleteRow:")) {
         _headerSheet.numberOfRowsOfBody -= 1;
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
-        [_headerSheet deleteRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+        [_headerSheet deleteRowsAtIndexPaths:indexSet inHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
     } else if (action == NSSelectorFromString(@"deleteColumn:")) {
         _headerSheet.numberOfColumnsOfBody -= 1;
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:indexPath.item];
-        [_headerSheet deleteColumnsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+        [_headerSheet deleteColumnsAtIndexPaths:indexSet inVerticalSectionType:TAXHeaderSheetVerticalSectionTypeMiddle];
     }
 }
 
@@ -190,24 +190,26 @@ static NSString * const SeparatorIdentifier = @"Separator";
 {
     _headerSheet.numberOfRowsOfBody += 1;
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
-    [_headerSheet insertRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+//    [_headerSheet insertRowsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+    [_headerSheet insertRowsAtIndexPaths:indexSet inHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
 }
 
 - (IBAction)moveRowDidTap:(id)sender
 {
-    [_headerSheet moveRow:5 toRow:2 inSectionType:TAXHeaderSheetSectionTypeBody];
+//    [_headerSheet moveRow:5 toRow:2 inSectionType:TAXHeaderSheetSectionTypeBody];
+    [_headerSheet moveRow:5 toRow:2 inHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
 }
 
 - (IBAction)insertColumnDidTap:(id)sender
 {
     _headerSheet.numberOfColumnsOfBody += 1;
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:1];
-    [_headerSheet insertColumnsAtIndexPaths:indexSet inSectionType:TAXHeaderSheetSectionTypeBody];
+    [_headerSheet insertColumnsAtIndexPaths:indexSet inVerticalSectionType:TAXHeaderSheetVerticalSectionTypeMiddle];
 }
 
 - (IBAction)moveColumnDidTap:(id)sender
 {
-    [_headerSheet moveColumn:5 toColumn:2 inSectionType:TAXHeaderSheetSectionTypeBody];
+    [_headerSheet moveColumn:5 toColumn:2 inVerticalSectionType:TAXHeaderSheetVerticalSectionTypeMiddle];
 }
 
 @end
