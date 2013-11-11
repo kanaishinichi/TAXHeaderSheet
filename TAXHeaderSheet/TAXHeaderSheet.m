@@ -514,54 +514,72 @@ static NSString * const CellIdentifier = @"Cell";
             return _widthOfFooter;
         }
     } else {
-        // Return width with priority (Top > Bottom > Middle > Property)
         TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForSpreadSheet:spreadSheet];
-        if ([self.delegate respondsToSelector:@selector(headerSheet:widthAtColumn:ofSectionType:)]) {
+        if ([self.delegate respondsToSelector:@selector(headerSheet:widthAtColumn:ofVerticalSectionType:)] ||
+            [_delegate respondsToSelector:@selector(headerSheet:widthAtColumn:ofSectionType:)]) {
             switch (sectionType) {
                     case TAXHeaderSheetSectionTypeTopLeft:
                     case TAXHeaderSheetSectionTypeMiddleLeft:
                     case TAXHeaderSheetSectionTypeBottomLeft:{
-                        CGFloat topLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
-                        CGFloat middleLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
-                        CGFloat bottomLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
-
-                        if (topLeft != NSNotFound) {
-                            return topLeft;
-                        } else if (bottomLeft != NSNotFound) {
-                            return bottomLeft;
-                        } else if (middleLeft != NSNotFound) {
-                            return middleLeft;
-                        } else return _widthOfHeaderCell;
+                        CGFloat leftWidth = [self.delegate headerSheet:self widthAtColumn:column ofVerticalSectionType:TAXHeaderSheetVerticalSectionTypeLeft];
+                        if (leftWidth != NSNotFound) {
+                            return leftWidth;
+                        } else {
+                            CGFloat topLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
+                            CGFloat middleLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
+                            CGFloat bottomLeft = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
+                            
+                            if (topLeft != NSNotFound) {
+                                return topLeft;
+                            } else if (bottomLeft != NSNotFound) {
+                                return bottomLeft;
+                            } else if (middleLeft != NSNotFound) {
+                                return middleLeft;
+                            }
+                        }
+                        return _widthOfHeaderCell;
                     }
                     case TAXHeaderSheetSectionTypeTopMiddle:
                     case TAXHeaderSheetSectionTypeBody:
                     case TAXHeaderSheetSectionTypeBottomMiddle:{
-                        CGFloat topMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
-                        CGFloat body = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBody];
-                        CGFloat bottomMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
-                        
-                        if (topMiddle != NSNotFound) {
-                            return topMiddle;
-                        } else if (bottomMiddle != NSNotFound) {
-                            return bottomMiddle;
-                        } else if (body != NSNotFound) {
-                            return body;
-                        } else return _sizeForCell.width;
+                        CGFloat middleWidth = [self.delegate headerSheet:self widthAtColumn:column ofVerticalSectionType:TAXHeaderSheetVerticalSectionTypeMiddle];
+                        if (middleWidth != NSNotFound) {
+                            return middleWidth;
+                        } else {
+                            CGFloat topMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
+                            CGFloat body = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBody];
+                            CGFloat bottomMiddle = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
+                            
+                            if (topMiddle != NSNotFound) {
+                                return topMiddle;
+                            } else if (bottomMiddle != NSNotFound) {
+                                return bottomMiddle;
+                            } else if (body != NSNotFound) {
+                                return body;
+                            }
+                        }
+                        return _sizeForCell.width;
                     }
                     case TAXHeaderSheetSectionTypeTopRight:
                     case TAXHeaderSheetSectionTypeMiddleRight:
                     case TAXHeaderSheetSectionTypeBottomRight:{
-                        CGFloat topRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopRight];
-                        CGFloat middleRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
-                        CGFloat bottomRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
-                        
-                        if (topRight != NSNotFound) {
-                            return topRight;
-                        } else if (bottomRight != NSNotFound) {
-                            return bottomRight;
-                        } else if (middleRight != NSNotFound) {
-                            return middleRight;
-                        } else return _widthOfFooterCell;
+                        CGFloat rightWidth = [self.delegate headerSheet:self widthAtColumn:column ofVerticalSectionType:TAXHeaderSheetVerticalSectionTypeRight];
+                        if (rightWidth != NSNotFound) {
+                            return rightWidth;
+                        } else {
+                            CGFloat topRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeTopRight];
+                            CGFloat middleRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
+                            CGFloat bottomRight = [_delegate headerSheet:self widthAtColumn:column ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
+                            
+                            if (topRight != NSNotFound) {
+                                return topRight;
+                            } else if (bottomRight != NSNotFound) {
+                                return bottomRight;
+                            } else if (middleRight != NSNotFound) {
+                                return middleRight;
+                            }
+                        }
+                        return _widthOfFooterCell;
                     }
                 default:
                     break;
@@ -595,52 +613,71 @@ static NSString * const CellIdentifier = @"Cell";
     } else {
         // Return height with priority (Left > Right > Middle > Property)
         TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForSpreadSheet:spreadSheet];
-        if ([self.delegate respondsToSelector:@selector(headerSheet:heightAtRow:ofSectionType:)]) {
+        if ([self.delegate respondsToSelector:@selector(headerSheet:heightAtRow:ofHorizontalSectionType:)] ||
+            [_delegate respondsToSelector:@selector(headerSheet:heightAtRow:ofSectionType:)]) {
             switch (sectionType) {
                     case TAXHeaderSheetSectionTypeTopLeft:
                     case TAXHeaderSheetSectionTypeTopMiddle:
                     case TAXHeaderSheetSectionTypeTopRight:{
-                        CGFloat topLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
-                        CGFloat topMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
-                        CGFloat topRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopRight];
-                        
-                        if (topLeft != NSNotFound) {
-                            return topLeft;
-                        } else if (topMiddle != NSNotFound) {
-                            return topMiddle;
-                        } else if (topRight != NSNotFound) {
-                            return topRight;
-                        } else return _heightOfHeaderCell;
+                        CGFloat topHeight = [_delegate headerSheet:self heightAtRow:row ofHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeTop];
+                        if (topHeight != NSNotFound) {
+                            return topHeight;
+                        } else {
+                            CGFloat topLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopLeft];
+                            CGFloat topMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopMiddle];
+                            CGFloat topRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeTopRight];
+                            
+                            if (topLeft != NSNotFound) {
+                                return topLeft;
+                            } else if (topMiddle != NSNotFound) {
+                                return topMiddle;
+                            } else if (topRight != NSNotFound) {
+                                return topRight;
+                            }
+                        }
+                        return _heightOfHeaderCell;
                     }
                     case TAXHeaderSheetSectionTypeMiddleLeft:
                     case TAXHeaderSheetSectionTypeBody:
                     case TAXHeaderSheetSectionTypeMiddleRight:{
-                        CGFloat middleLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
-                        CGFloat body = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBody];
-                        CGFloat middleRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
-                        
-                        if (middleLeft != NSNotFound) {
-                            return middleLeft;
-                        } else if (body != NSNotFound) {
-                            return body;
-                        } else if (middleRight != NSNotFound) {
-                            return middleRight;
-                        } else return _sizeForCell.height;
+                        CGFloat middleHeight = [_delegate headerSheet:self heightAtRow:row ofHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeMiddle];
+                        if (middleHeight != NSNotFound) {
+                            return middleHeight;
+                        } else {
+                            CGFloat middleLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleLeft];
+                            CGFloat body = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBody];
+                            CGFloat middleRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeMiddleRight];
+                            
+                            if (middleLeft != NSNotFound) {
+                                return middleLeft;
+                            } else if (body != NSNotFound) {
+                                return body;
+                            } else if (middleRight != NSNotFound) {
+                                return middleRight;
+                            }
+                        }
+                        return _sizeForCell.height;
                     }
                     case TAXHeaderSheetSectionTypeBottomLeft:
                     case TAXHeaderSheetSectionTypeBottomMiddle:
                     case TAXHeaderSheetSectionTypeBottomRight:{
-                        CGFloat bottomLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
-                        CGFloat bottomMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
-                        CGFloat bottomRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
-                        
-                        if (bottomLeft != NSNotFound) {
-                            return bottomLeft;
-                        } else if (bottomMiddle != NSNotFound) {
-                            return bottomMiddle;
-                        } else if (bottomRight != NSNotFound) {
-                            return bottomRight;
-                        } else return _heightOfFooterCell;
+                        CGFloat bottomHight = [_delegate headerSheet:self heightAtRow:row ofHorizontalSectionType:TAXHeaderSheetHorizontalSectionTypeBottom];
+                        if (bottomHight != NSNotFound) {
+                            return bottomHight;
+                        } else {
+                            CGFloat bottomLeft = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomLeft];
+                            CGFloat bottomMiddle = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomMiddle];
+                            CGFloat bottomRight = [_delegate headerSheet:self heightAtRow:row ofSectionType:TAXHeaderSheetSectionTypeBottomRight];
+                            
+                            if (bottomLeft != NSNotFound) {
+                                return bottomLeft;
+                            } else if (bottomMiddle != NSNotFound) {
+                                return bottomMiddle;
+                            } else if (bottomRight != NSNotFound) {
+                                return bottomRight;
+                            }
+                        }
+                        return _heightOfFooterCell;
                     }
                 default:
                     break;
@@ -649,13 +686,13 @@ static NSString * const CellIdentifier = @"Cell";
             if (sectionType == TAXHeaderSheetSectionTypeTopLeft ||
                 sectionType == TAXHeaderSheetSectionTypeTopMiddle ||
                 sectionType == TAXHeaderSheetSectionTypeTopRight) {
-                return self.heightOfHeaderCell;
+                return _heightOfHeaderCell;
             } else if (sectionType == TAXHeaderSheetSectionTypeMiddleLeft ||
                        sectionType == TAXHeaderSheetSectionTypeBody ||
                        sectionType == TAXHeaderSheetSectionTypeMiddleRight) {
-                return self.sizeForCell.height;
+                return _sizeForCell.height;
             } else {
-                return self.heightOfFooterCell;
+                return _heightOfFooterCell;
             }
         }
     }

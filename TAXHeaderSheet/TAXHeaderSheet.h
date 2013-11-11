@@ -29,6 +29,20 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
     TAXHeaderSheetSeparatorTypeRight
 };
 
+typedef NS_ENUM(NSInteger, TAXHeaderSheetHorizontalSectionType)
+{
+    TAXHeaderSheetHorizontalSectionTypeTop,
+    TAXHeaderSheetHorizontalSectionTypeMiddle,
+    TAXHeaderSheetHorizontalSectionTypeBottom
+};
+
+typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
+{
+    TAXHeaderSheetVerticalSectionTypeLeft,
+    TAXHeaderSheetVerticalSectionTypeMiddle,
+    TAXHeaderSheetVerticalSectionTypeRight
+};
+
 @class TAXHeaderSheet;
 
 #pragma mark - Delegate
@@ -40,7 +54,13 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 - (UICollectionReusableView *)headerSheet:(TAXHeaderSheet *)headerSheet separatorViewOfSeparatorType:(TAXHeaderSheetSeparatorType)separatorType;
 
 // Size of cell in each sheet
+- (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet heightAtRow:(NSUInteger)row ofHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
+- (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet widthAtColumn:(NSUInteger)column ofVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
+
+/// Deprecated
 - (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet heightAtRow:(NSUInteger)row ofSectionType:(TAXHeaderSheetSectionType)sectionType;
+
+/// Deprecated
 - (CGFloat)headerSheet:(TAXHeaderSheet *)headerSheet widthAtColumn:(NSUInteger)column ofSectionType:(TAXHeaderSheetSectionType)sectionType;
 
 // Inter-column/row spacing of each sheet
@@ -106,13 +126,27 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetSeparatorType)
 - (void)reloadData;
 
 // Inserting, moving, and deleting rows.
+- (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
+- (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
+- (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
+
+/// Deprecated
 - (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+/// Deprecated
 - (void)moveRow:(NSInteger)fromRow toRow:(NSInteger)toRow inSectionType:(TAXHeaderSheetSectionType)sectionType;
+/// Deprecated
 - (void)deleteRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
 
 // Inserting, moving, and deleting columns.
+- (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
+- (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
+- (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
+
+/// Deprecated
 - (void)insertColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
+/// Deprecated
 - (void)moveColumn:(NSInteger)fromColumn toColumn:(NSInteger)toColumn inSectionType:(TAXHeaderSheetSectionType)sectionType;
+/// Deprecated
 - (void)deleteColumnsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType;
 
 #pragma mark - Separator views
