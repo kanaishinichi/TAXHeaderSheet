@@ -65,6 +65,7 @@ static NSString * const CellIdentifier = @"Cell";
     containerSheet.scrollEnabled = NO;
     containerSheet.dataSource = self;
     containerSheet.delegate = self;
+    containerSheet.backgroundColor = self.backgroundColor;
     
     self.containerSheet = containerSheet;
     [self addSubview:containerSheet];
@@ -298,9 +299,9 @@ static NSString * const CellIdentifier = @"Cell";
     }];
 }
 
-# pragma mark - Properties
+# pragma mark - Background Color/View of Section
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
+- (void)setBackgroundColorInAllSection:(UIColor *)backgroundColor
 {
     [_sheetArray enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
         if ([spreadSheet respondsToSelector:@selector(setBackgroundColor:)]) {

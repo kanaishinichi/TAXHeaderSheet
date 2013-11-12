@@ -128,6 +128,7 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
 @property (nonatomic, assign) NSUInteger numberOfRowsOfBody __attribute__ ((deprecated)), numberOfColumnsOfBody __attribute__ ((deprecated)), numberOfRowsOfHeader __attribute__ ((deprecated)), numberOfRowsOfFooter __attribute__ ((deprecated)), numberOfColumnsOfHeader __attribute__ ((deprecated)), numberOfColumnsOfFooter __attribute__ ((deprecated));
 
 // BackgroundColor/View
+- (void)setBackgroundColorInAllSection:(UIColor *)backgroundColor;
 - (void)setBackgroundColor:(UIColor *)backgroundColor inSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (void)setBackgroundView:(UIView *)backgroundView inSectionType:(TAXHeaderSheetSectionType)sectionType;
 
