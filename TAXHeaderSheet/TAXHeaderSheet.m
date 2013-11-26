@@ -166,84 +166,47 @@ static NSString * const CellIdentifier = @"Cell";
     return [self p_sectionTypeForSpreadSheet:spreadSheet];
 }
 
-- (NSArray *)p_spreadSheetsSameRowAsSectionType:(TAXHeaderSheetSectionType)sectionType
-{
-    switch (sectionType) {
-        case TAXHeaderSheetSectionTypeTopLeft:
-        case TAXHeaderSheetSectionTypeTopMiddle:
-        case TAXHeaderSheetSectionTypeTopRight:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight]];
-            break;
-        case TAXHeaderSheetSectionTypeMiddleLeft:
-        case TAXHeaderSheetSectionTypeBody:
-        case TAXHeaderSheetSectionTypeMiddleRight:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight]];
-            break;
-        case TAXHeaderSheetSectionTypeBottomLeft:
-        case TAXHeaderSheetSectionTypeBottomMiddle:
-        case TAXHeaderSheetSectionTypeBottomRight:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
-            break;
-        default:
-            return nil;
-            break;
-    }
-}
-
-- (NSArray *)p_spreadSheetsSameColumnAsSectionType:(TAXHeaderSheetSectionType)sectionType
-{
-    switch (sectionType) {
-        case TAXHeaderSheetSectionTypeTopLeft:
-        case TAXHeaderSheetSectionTypeMiddleLeft:
-        case TAXHeaderSheetSectionTypeBottomLeft:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft]];
-            break;
-        case TAXHeaderSheetSectionTypeTopMiddle:
-        case TAXHeaderSheetSectionTypeBody:
-        case TAXHeaderSheetSectionTypeBottomMiddle:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle]];
-            break;
-        case TAXHeaderSheetSectionTypeTopRight:
-        case TAXHeaderSheetSectionTypeMiddleRight:
-        case TAXHeaderSheetSectionTypeBottomRight:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
-            break;
-        default:
-            return nil;
-            break;
-    }
-}
-
 - (NSArray *)p_spreadSheetsOfHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType
 {
+    NSMutableArray *array = [NSMutableArray array];
     switch (horizontalSectionType) {
-        case TAXHeaderSheetHorizontalSectionTypeTop:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight]];
+        case TAXHeaderSheetHorizontalSectionTypeTop:{
+            if (self.heightOfHeader > 0) {
+                if (self.widthOfHeader > 0) {
+                    [array addObject:_sheetArray[TAXHeaderSheetSectionTypeTopLeft]];
+                }
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeTopMiddle]];
+                if (self.widthOfFooter > 0) {
+                    [array addObject:_sheetArray[TAXHeaderSheetSectionTypeTopRight]];
+                }
+            }
+            return array;
             break;
-        case TAXHeaderSheetHorizontalSectionTypeMiddle:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight]];
+        }
+        case TAXHeaderSheetHorizontalSectionTypeMiddle:{
+            if (self.widthOfHeader > 0) {
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeMiddleLeft]];
+            }
+            [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBody]];
+            if (self.widthOfFooter > 0) {
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeMiddleRight]];
+            }
+            return array;
             break;
-        case TAXHeaderSheetHorizontalSectionTypeBottom:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
+        }
+        case TAXHeaderSheetHorizontalSectionTypeBottom:{
+            if (self.heightOfFooter > 0) {
+                if (self.widthOfHeader > 0) {
+                    [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBottomLeft]];
+                }
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBottomMiddle]];
+                if (self.widthOfFooter > 0) {
+                    [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBottomRight]];
+                }
+            }
+            return array;
             break;
+        }
         default:
             return nil;
             break;
@@ -252,22 +215,44 @@ static NSString * const CellIdentifier = @"Cell";
 
 - (NSArray *)p_spreadSheetsOfVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
 {
+    NSMutableArray *array = [NSMutableArray array];
     switch (verticalSectionType) {
-        case TAXHeaderSheetVerticalSectionTypeLeft:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft]];
+        case TAXHeaderSheetVerticalSectionTypeLeft:{
+            if (self.widthOfHeader > 0) {
+                if (self.heightOfHeader > 0) {
+                    [array addObject:_sheetArray[TAXHeaderSheetSectionTypeTopLeft]];
+                }
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeMiddleLeft]];
+                if (self.heightOfFooter > 0) {
+                    [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBottomLeft]];
+                }
+            }
+            return array;
             break;
-        case TAXHeaderSheetVerticalSectionTypeMiddle:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle]];
+        }
+        case TAXHeaderSheetVerticalSectionTypeMiddle:{
+            if (self.heightOfHeader > 0) {
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeTopMiddle]];
+            }
+            [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBody]];
+            if (self.heightOfFooter > 0) {
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBottomMiddle]];
+            }
+            return array;
             break;
-        case TAXHeaderSheetVerticalSectionTypeRight:
-            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight],
-                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
+        }
+        case TAXHeaderSheetVerticalSectionTypeRight:{
+            if (self.heightOfHeader > 0) {
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeTopRight]];
+            }
+            [array addObject:_sheetArray[TAXHeaderSheetSectionTypeMiddleRight]];
+            if (self.widthOfFooter > 0) {
+                [array addObject:_sheetArray[TAXHeaderSheetSectionTypeBottomRight]];
+            }
+            return array;
             break;
+
+        }
         default:
             return nil;
             break;
@@ -375,6 +360,66 @@ static NSString * const CellIdentifier = @"Cell";
 }
 
 # pragma mark - Deprecated Methods
+
+- (NSArray *)p_spreadSheetsSameRowAsSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    switch (sectionType) {
+        case TAXHeaderSheetSectionTypeTopLeft:
+        case TAXHeaderSheetSectionTypeTopMiddle:
+        case TAXHeaderSheetSectionTypeTopRight:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight]];
+            break;
+        case TAXHeaderSheetSectionTypeMiddleLeft:
+        case TAXHeaderSheetSectionTypeBody:
+        case TAXHeaderSheetSectionTypeMiddleRight:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight]];
+            break;
+        case TAXHeaderSheetSectionTypeBottomLeft:
+        case TAXHeaderSheetSectionTypeBottomMiddle:
+        case TAXHeaderSheetSectionTypeBottomRight:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
+            break;
+        default:
+            return nil;
+            break;
+    }
+}
+
+- (NSArray *)p_spreadSheetsSameColumnAsSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    switch (sectionType) {
+        case TAXHeaderSheetSectionTypeTopLeft:
+        case TAXHeaderSheetSectionTypeMiddleLeft:
+        case TAXHeaderSheetSectionTypeBottomLeft:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft]];
+            break;
+        case TAXHeaderSheetSectionTypeTopMiddle:
+        case TAXHeaderSheetSectionTypeBody:
+        case TAXHeaderSheetSectionTypeBottomMiddle:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle]];
+            break;
+        case TAXHeaderSheetSectionTypeTopRight:
+        case TAXHeaderSheetSectionTypeMiddleRight:
+        case TAXHeaderSheetSectionTypeBottomRight:
+            return @[[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight],
+                     [self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight]];
+            break;
+        default:
+            return nil;
+            break;
+    }
+}
 
 - (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
