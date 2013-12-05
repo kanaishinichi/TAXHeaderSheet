@@ -259,7 +259,7 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
-#pragma mark
+#pragma mark - Returning each section/separator as UIView
 
 - (UIView *)viewForSectionType:(TAXHeaderSheetSectionType)sectionType
 {
@@ -275,9 +275,37 @@ static NSString * const CellIdentifier = @"Cell";
     }
 }
 
+# pragma mark - Reload Data
+
 - (void)reloadData
 {
     [_sheetArray enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        if ([spreadSheet respondsToSelector:@selector(reloadData)]) {
+            [spreadSheet reloadData];
+        }
+    }];
+}
+
+- (void)reloadDataOfSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    TAXSpreadSheet *spreadSheet = [self p_spreadSheetForSectionType:sectionType];
+    [spreadSheet reloadData];
+}
+
+- (void)reloadDataOfHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType
+{
+    NSArray *array = [self p_spreadSheetsOfHorizontalSectionType:horizontalSectionType];
+    [array enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
+        if ([spreadSheet respondsToSelector:@selector(reloadData)]) {
+            [spreadSheet reloadData];
+        }
+    }];
+}
+
+- (void)reloadDataOfVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType
+{
+    NSArray *array = [self p_spreadSheetsOfVerticalSectionType:verticalSectionType];
+    [array enumerateObjectsUsingBlock:^(TAXSpreadSheet *spreadSheet, NSUInteger idx, BOOL *stop) {
         if ([spreadSheet respondsToSelector:@selector(reloadData)]) {
             [spreadSheet reloadData];
         }
