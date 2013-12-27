@@ -284,6 +284,7 @@ static NSString * const CellIdentifier = @"Cell";
             [spreadSheet reloadData];
         }
     }];
+    [_containerSheet invalidateLayout];
 }
 
 - (void)reloadDataOfSectionType:(TAXHeaderSheetSectionType)sectionType
