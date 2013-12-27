@@ -10,7 +10,9 @@
 #import "TAXSpreadSheet.h"
 
 @interface TAXHeaderSheet () <TAXSpreadSheetDataSource, TAXSpreadSheetDelegate>
-
+{
+    UIScrollView *_currentScrollingView;
+}
 @property (nonatomic) TAXSpreadSheet *containerSheet;
 @property (nonatomic) NSMutableArray *sheetArray, *separatorArray, *classArray, *nibArray;
 @end
@@ -604,7 +606,7 @@ static NSString * const CellIdentifier = @"Cell";
             if (sectionType != TAXHeaderSheetSectionTypeBody) {
                 spreadSheet.showsHorizontalScrollIndicator = NO;
                 spreadSheet.showsVerticalScrollIndicator = NO;
-                spreadSheet.scrollEnabled = NO;
+//                spreadSheet.scrollEnabled = NO;
             }
         }
         return spreadSheet;
@@ -902,14 +904,95 @@ static NSString * const CellIdentifier = @"Cell";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView != _currentScrollingView) {
+        return;
+    }
+    
     TAXHeaderSheetSectionType sectionType = [self p_sectionTypeForCollectionView:(UICollectionView *)scrollView];
 
+    CGPoint scrollingOffset = scrollView.contentOffset;
+    switch (sectionType) {
+        case TAXHeaderSheetSectionTypeBody: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        case TAXHeaderSheetSectionTypeTopLeft: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        case TAXHeaderSheetSectionTypeTopMiddle: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        case TAXHeaderSheetSectionTypeMiddleLeft: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        case TAXHeaderSheetSectionTypeMiddleRight: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        case TAXHeaderSheetSectionTypeBottomLeft: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopLeft] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        case TAXHeaderSheetSectionTypeBottomMiddle: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBody] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        case TAXHeaderSheetSectionTypeBottomRight: {
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopRight] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomLeft] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+            break;
+        }
+        default:
+            break;
+    }
+    /*
     if (sectionType == TAXHeaderSheetSectionTypeBody) {
         CGPoint scrollingOffset = scrollView.contentOffset;
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeTopMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeBottomMiddle] setContentOffset:CGPointMake(scrollingOffset.x, 0)];
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleLeft] setContentOffset:CGPointMake(0, scrollingOffset.y)];
         [[self p_spreadSheetForSectionType:TAXHeaderSheetSectionTypeMiddleRight] setContentOffset:CGPointMake(0, scrollingOffset.y)];
+    }
+     */
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    scrollView.exclusiveTouch = YES;
+    _currentScrollingView = scrollView;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView == _currentScrollingView) {
+        scrollView.exclusiveTouch = NO;
+        _currentScrollingView = nil;
     }
 }
 
