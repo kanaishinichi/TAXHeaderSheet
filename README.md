@@ -116,6 +116,7 @@ MIT License
 ###0.2.0
 - [Add] Methods for inserting, moving, deleting rows/columns.
 - [Add] Methods for setting background color/view.
+
 ###0.3.0
 - [Add] Feature of scrolling in touching any section.
 - [Add] TAXHeaderSheetHorizontal/VerticalSectionType
