@@ -76,20 +76,20 @@ static NSString * const SeparatorIdentifier = @"Separator";
             case TAXHeaderSheetSectionTypeMiddleRight:
             case TAXHeaderSheetSectionTypeBottomMiddle:
             case TAXHeaderSheetSectionTypeBottomRight:{
-                cell.textLabel.text = [NSString stringWithFormat:@"%d-%d", row, column];
+                cell.textLabel.text = [NSString stringWithFormat:@"%tu-%tu", row, column];
                 cell.backgroundColor = [UIColor whiteColor];
                 break;
             }
             case TAXHeaderSheetSectionTypeTopMiddle:
             case TAXHeaderSheetSectionTypeTopRight:{
-                cell.textLabel.text = [NSString stringWithFormat:@"Col %d", column];
+                cell.textLabel.text = [NSString stringWithFormat:@"Col %tu", column];
                 cell.backgroundColor = [UIColor darkGrayColor];
                 cell.textLabel.textColor = [UIColor lightTextColor];
                 break;
             }
             case TAXHeaderSheetSectionTypeMiddleLeft:
             case TAXHeaderSheetSectionTypeBottomLeft:{
-                cell.textLabel.text = [NSString stringWithFormat:@"Row %d", row];
+                cell.textLabel.text = [NSString stringWithFormat:@"Row %tu", row];
                 cell.backgroundColor = [UIColor lightGrayColor];
                 cell.textLabel.textColor = [UIColor lightTextColor];
                 break;
@@ -180,7 +180,7 @@ static NSString * const SeparatorIdentifier = @"Separator";
 - (void)headerSheet:(TAXHeaderSheet *)headerSheet didSelectItemAtIndexPath:(NSIndexPath *)indexPath inSectionType:(TAXHeaderSheetSectionType)sectionType
 {
     if (sectionType == TAXHeaderSheetSectionTypeBody) {
-        NSString *message = [NSString stringWithFormat:@"Row:%d Column:%d \nhas tapped.", indexPath.section, indexPath.item];
+        NSString *message = [NSString stringWithFormat:@"Row:%zd Column:%zd \nhas tapped.", indexPath.section, indexPath.item];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                             message:message delegate:nil
                                                   cancelButtonTitle:nil
