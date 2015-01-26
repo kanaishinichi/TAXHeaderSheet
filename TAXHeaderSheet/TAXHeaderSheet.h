@@ -132,10 +132,14 @@ typedef NS_ENUM(NSInteger, TAXHeaderSheetVerticalSectionType)
 - (void)setBackgroundColor:(UIColor *)backgroundColor inSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (void)setBackgroundView:(UIView *)backgroundView inSectionType:(TAXHeaderSheetSectionType)sectionType;
 
+// Reloading data
 - (void)reloadData;
 - (void)reloadDataOfSectionType:(TAXHeaderSheetSectionType)sectionType;
 - (void)reloadDataOfHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;
 - (void)reloadDataOfVerticalSectionType:(TAXHeaderSheetVerticalSectionType)verticalSectionType;
+
+// Invalidating Layouts
+- (void)invalidateLayoutOfSectionType:(TAXHeaderSheetSectionType)sectionType;
 
 // Inserting, moving, and deleting rows.
 - (void)insertRowsAtIndexPaths:(NSIndexSet *)indexPaths inHorizontalSectionType:(TAXHeaderSheetHorizontalSectionType)horizontalSectionType;

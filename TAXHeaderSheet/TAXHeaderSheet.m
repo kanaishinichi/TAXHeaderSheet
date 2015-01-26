@@ -315,6 +315,14 @@ static NSString * const CellIdentifier = @"Cell";
     }];
 }
 
+# pragma mark - Invalidate Layout
+
+- (void)invalidateLayoutOfSectionType:(TAXHeaderSheetSectionType)sectionType
+{
+    TAXSpreadSheet *spreadSheet = [self p_spreadSheetForSectionType:sectionType];
+    [spreadSheet invalidateLayout];
+}
+
 # pragma mark - Background Color/View of Section
 
 - (void)setBackgroundColorInAllSection:(UIColor *)backgroundColor
